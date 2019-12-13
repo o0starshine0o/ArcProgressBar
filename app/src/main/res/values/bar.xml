@@ -13,8 +13,14 @@
         <attr name="dottedLineHeight" format="integer" />
         <attr name="lineDistance" format="integer" />
         <attr name="progressMax" format="integer" />
+        <attr name="progressMin" format="integer" />
+        <attr name="progress" format="integer" />
         <attr name="progressTextSize" format="integer" />
         <attr name="progressDesc" format="string" />
         <attr name="arcUseGradient" format="boolean" />
+        <attr name="scaleInsidePercent" format="fraction" />
+        <attr name="scaleOutsidePercent" format="fraction" />
+        <attr name="scaleOutsideSpecialPercent" format="fraction" />
+        <attr name="specialScales" format="string" />
     </declare-styleable>
 </resources>
