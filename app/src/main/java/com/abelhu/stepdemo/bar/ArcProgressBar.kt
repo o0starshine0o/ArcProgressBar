@@ -20,14 +20,14 @@ import kotlin.math.min
 class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : View(context, attrs, defStyleAttr) {
 
     /**
-     * 动态刻度线前景的画笔
+     * 前景的画笔
      */
-    private var mScaleForePaint: Paint? = null
+    private var mForePaint: Paint? = null
 
     /**
-     * 动态刻度线背景的画笔
+     * 背景（渐变颜色）的画笔
      */
-    private var mScaleBackPaint: Paint? = null
+    private var mGradientColorPaint: Paint? = null
 
     /**
      * 静态刻度线的画笔
@@ -97,34 +97,37 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
         get() = max(min((mProgress - mProgressMin).toFloat() / (mProgressMax - mProgressMin), 1f), 0f)
 
     /**
-     * 刻度线前景图片
+     * 刻度线图片
      */
-    private var scaleForeBitmap: Bitmap? = null
+    private var mScaleBitmap: Bitmap? = null
     /**
-     * 刻度线背景图片
+     * 进度条图片
      */
-    private var scaleBackBitmap: Bitmap? = null
+    private var mProgressBarBitmap: Bitmap? = null
     /**
-     * 刻度线前景画布
+     * 渐变色图片
      */
-    private var scaleForeCanvas: Canvas? = null
+    private var mColorBitmap: Bitmap? = null
     /**
-     * 刻度线背景画布
+     * 刻度线画布
      */
-    private var scaleBackCanvas: Canvas? = null
+    private var mScaleCanvas: Canvas? = null
+    /**
+     * 刻度线画布
+     */
+    private var mProgressBarCanvas: Canvas? = null
+    /**
+     * 渐变色画布
+     */
+    private var mColorCanvas: Canvas? = null
     /**
      * 可使用的矩形区域
      */
-    private var mArcRect = RectF()
-    /**
-     * 可使用的矩形区域
-     */
-    private var mProgressRect = RectF()
+    private var mRect = RectF()
     /**
      * 刻度需要绘制圆角矩形
      */
     private var mScale = RectF()
-    private var mCenter = PointF()
 
 
     /**
@@ -206,20 +209,6 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
     //是否使用渐变
     protected var useGradient = true
     private var mScressWidth = 0
-    //    private var mProgress = 0
-    private var mExternalDottedLineRadius = 0f
-    private var mInsideDottedLineRadius = 0f
-    /**
-     * 绘图的中心点
-     */
-    private var mArcCenterX = 0f
-    private var mArcCenterY = 0f
-    private var mArcRadius // 圆弧半径
-            = 0
-    private var bDistance = 0.0
-    private var aDistance = 0.0
-    private var isRestart = false
-    private var mRealProgress = 0
 
     init {
         intiAttributes(context, attrs)
@@ -254,15 +243,15 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
 
     private fun initView() {
         // 设置刻度线前景的画笔
-        mScaleForePaint = Paint()
-        mScaleForePaint?.isAntiAlias = true
-        mScaleForePaint?.isDither = true
-        mScaleForePaint?.isFilterBitmap = true
+        mForePaint = Paint()
+        mForePaint?.isAntiAlias = true
+        mForePaint?.isDither = true
+        mForePaint?.isFilterBitmap = true
         // 设置刻度线背景的画笔
-        mScaleBackPaint = Paint()
-        mScaleBackPaint?.isAntiAlias = true
-        mScaleBackPaint?.isDither = true
-        mScaleBackPaint?.isFilterBitmap = true
+        mGradientColorPaint = Paint()
+        mGradientColorPaint?.isAntiAlias = true
+        mGradientColorPaint?.isDither = true
+        mGradientColorPaint?.isFilterBitmap = true
         // 设置静态刻度线的画笔
         mScaleStaticPaint = Paint()
         mScaleStaticPaint?.isAntiAlias = true
@@ -315,16 +304,11 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         val size = min(measuredWidth, measuredHeight)
         // 使用最大的内接正方形作为绘制有效区域
-        mArcRect.apply {
+        mRect.apply {
             left = (measuredWidth - size).toFloat() / 2
             top = (measuredHeight - size).toFloat() / 2
             right = left + size
             bottom = top + size
-        }
-        // 计算中心点坐标
-        mCenter.apply {
-            x = size.toFloat() / 2
-            y = size.toFloat() / 2
         }
         // 计算刻度线的半径
         mScaleInsideRadius = (mScaleInsidePercent * 0.5 * size).toFloat()
@@ -332,151 +316,26 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
         mScaleOutsideSpecialRadius = (mScaleOutsideSpecialPercent * 0.5 * size).toFloat()
         // 计算进度条的半径
         mProgressBarRadius = (mProgressBarPercent * 0.5 * size).toFloat()
-        // 设置进度条的区域
-        mProgressRect.apply {
-            left = mArcRect.centerX() - mProgressBarRadius
-            top = mArcRect.centerY() - mProgressBarRadius
-            right = mArcRect.centerX() + mProgressBarRadius
-            bottom = mArcRect.centerY() + mProgressBarRadius
-        }
     }
-
-//    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-//        super.onSizeChanged(w, h, oldw, oldh)
-//        mArcCenterX = (w / 2f)
-//        mArcRect = RectF()
-//        mArcRect!!.top = 0f
-//        mArcRect!!.left = 0f
-//        mArcRect!!.right = w.toFloat()
-//        mArcRect!!.bottom = h.toFloat()
-//        mArcRect!!.inset(
-//                dp2px(resources, mArcWidth) / 2,
-//                dp2px(resources, mArcWidth) / 2
-//        ) //设置矩形的宽度
-//        mArcRadius = (mArcRect!!.width() / 2).toInt()
-//        val sqrt =
-//                Math.sqrt(mArcRadius * mArcRadius + mArcRadius * mArcRadius.toDouble())
-//        bDistance = Math.cos(Math.PI * 45 / 180) * mArcRadius
-//        aDistance = Math.sin(Math.PI * 45 / 180) * mArcRadius
-//        // 内部虚线的外部半径
-//        mExternalDottedLineRadius = mArcRadius - dp2px(resources, mArcWidth) / 2 - dp2px(resources, mLineDistance.toFloat())
-//        // 内部虚线的内部半径
-//        mInsideDottedLineRadius = mExternalDottedLineRadius - dp2px(resources, mDottedLineWidth.toFloat())
-//        if (useGradient) {
-//            val gradient = LinearGradient(
-//                    0f,
-//                    0f,
-//                    measuredWidth.toFloat(),
-//                    measuredHeight.toFloat(),
-//                    mArcForeEndColor,
-//                    mArcForeStartColor,
-//                    Shader.TileMode.CLAMP
-//            )
-//            mArcForePaint!!.shader = gradient
-//        } else {
-//            mArcForePaint!!.color = mArcForeStartColor
-//        }
-//        // 使用最大的内接正方形
-//        val size = min(measuredWidth, measuredHeight)
-//        mArcRect.apply {
-//            left = (measuredWidth - size).toFloat() / 2
-//            top = (measuredHeight - size).toFloat() / 2
-//            right = left + size
-//            bottom = top + size
-//        }
-//        mArcCenterX = (mArcRect.left + mArcRect.right) / 2
-//        mArcCenterY = (mArcRect.top + mArcRect.bottom) / 2
-//    }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        // 绘制静态刻度线
-        drawStaticScale(canvas)
-        // 绘制动态刻度线
-        drawScale(canvas)
+        // 更新背景颜色bitmap
+        updateColorBitmap()
+        // 更新动态刻度线bitmap
+        updateScaleBitmap()
+        // 更新动态进度条bitmap
+        updateProgressBarBitmap()
         // 绘制坐标
         drawCoordinate(canvas)
-        // 绘制进度条
+        // 绘制静态刻度线
+        drawStaticScale(canvas)
+        // 绘制静态进度条
+        drawStaticProgressBar(canvas)
+        // 绘制动态刻度线
+        drawScale(canvas)
+        // 绘制动态进度条
         drawProgressBar(canvas)
-//        mArcBgPaint?.color = mArcBgColor
-//        canvas.drawText(
-//                "信用额度", mArcCenterX - mProgressPaint!!.measureText("信用额度") / 2,
-//                mArcCenterX - (mProgressPaint!!.descent() + mProgressPaint!!.ascent()) / 2 - dp2px(
-//                        resources,
-//                        20f
-//                ), mProgressPaint!!
-//        )
-//        drawDottedLineArc(canvas)
-//        drawRunDottedLineArc(canvas)
-//        drawRunText(canvas)
-//        canvas.rotate(135f, mArcCenterX.toFloat(), mArcCenterX.toFloat())
-//        canvas.drawArc(mArcRect!!, 0f, 270f, false, mArcBgPaint!!) //画背景圆弧
-        //        canvas.drawRect(mArcRect, mArcBgPaint);//画直角矩形
-//        canvas.drawCircle(400, 400, 100, mArcForePaint);//画圆
-//        canvas.drawArc(mArcRect!!, 0f, 0f, false, mArcForePaint!!) //画前景圆弧
-        //        canvas.drawColor(Color.TRANSPARENT);//设置画布背景
-//        canvas.drawLine(100, 100, 400, 400, mArcBgPaint);//画直线
-//        canvas.drawPoint(500, 500, mArcBgPaint);//画点
-//        mProgressPaint!!.color = resources.getColor(R.color.gray)
-//        mProgressPaint!!.textSize = dp2px(resources, 18f)
-//        drawRunFullLineArc(canvas)
-//        if (isRestart) {
-//            drawDottedLineArc(canvas)
-//        }
-    }
-
-    private fun drawRunText(canvas: Canvas) {
-        var progressStr: String? = (mRealProgress * 25).toString() + ""
-        if (!TextUtils.isEmpty(mProgressDesc)) {
-            progressStr = mProgressDesc
-        }
-        mProgressPaint!!.textSize = dp2px(resources, mProgressTextSize.toFloat())
-        mProgressPaint!!.color = mProgressTextRunColor
-        canvas.drawText(
-                progressStr!!, mArcCenterX - mProgressPaint!!.measureText(progressStr) / 2,
-                mArcCenterX - (mProgressPaint!!.descent() + mProgressPaint!!.ascent()) / 2 + dp2px(
-                        resources,
-                        13f
-                ), mProgressPaint!!
-        )
-    }
-
-    fun restart() {
-        isRestart = true
-        mRealProgress = 0
-        mProgressDesc = ""
-        invalidate()
-    }
-
-    /**
-     * 设置中间进度描述
-     *
-     * @param desc
-     */
-    fun setProgressDesc(desc: String?) {
-        mProgressDesc = desc
-        postInvalidate()
-    }
-
-    /**
-     * 设置最大进度
-     *
-     * @param max
-     */
-    fun setMaxProgress(max: Int) {
-        mProgressMax = max
-    }
-
-    /**
-     * 设置当前进度
-     *
-     * @param progress
-     */
-    fun setProgress(progress: Int) { // 进度100% = 控件的75%
-        mRealProgress = progress
-        isRestart = false
-        mProgress = mDottedLineCount * 3 / 4 * progress / mProgressMax
-        postInvalidate()
     }
 
     private val screenWH: IntArray
@@ -497,63 +356,27 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
      * 因为xfermode为DST_IN时只接受bitmap对象，所以先更新背景和前景的bitmap
      */
     private fun drawScale(canvas: Canvas) {
-        // 更新刻度线的图片
-        updateScaleImage()
         // 判断绘制点
         val size = min(measuredHeight, measuredWidth)
         val top = ((measuredHeight - size) / 2).toFloat()
         val left = ((measuredWidth - size) / 2).toFloat()
         // 保存当前图层
-        val layer = canvas.saveLayer(mArcRect, null, ALL_SAVE_FLAG)
+        val layer = canvas.saveLayer(mRect, null, ALL_SAVE_FLAG)
         // 绘制背景图片
-        scaleBackBitmap?.also { canvas.drawBitmap(it, left, top, mScaleBackPaint) }
+        mColorBitmap?.also { canvas.drawBitmap(it, left, top, mGradientColorPaint) }
         // 设置画笔样式
-        mScaleForePaint?.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_IN)
+        mForePaint?.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_IN)
         // 绘制前景图片
-        scaleForeBitmap?.also { canvas.drawBitmap(it, left, top, mScaleForePaint) }
+        mScaleBitmap?.also { canvas.drawBitmap(it, left, top, mForePaint) }
         // 恢复图层
         canvas.restoreToCount(layer)
     }
 
     private fun drawStaticScale(canvas: Canvas) {
-        drawForeScale(canvas, PointF(measuredWidth.toFloat() / 2, measuredHeight.toFloat() / 2), mScaleStaticPaint)
+        drawForeScale(canvas, mRect.centerX(), mRect.centerY(), mScaleStaticPaint)
     }
 
-    /**
-     * 更新刻度线背景和前景的bitmap
-     */
-    private fun updateScaleImage() {
-        val size = min(measuredHeight, measuredWidth)
-        if (size <= 0) return
-
-        // 绘制刻度的背景，刻度线背景只需要绘制一次，因为背景几乎不变动
-        if (scaleBackBitmap == null || scaleBackBitmap?.width != size || scaleBackBitmap?.height != size) {
-            scaleBackBitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
-            if (scaleBackCanvas == null) {
-                scaleBackBitmap?.also { scaleBackCanvas = Canvas(it) }
-            }
-            scaleBackCanvas?.also { drawBackScale(it, size.toFloat()) }
-        }
-
-        // 绘制刻度的前景，每次更新都需要绘制
-        if (scaleForeBitmap == null || scaleForeBitmap?.width != size || scaleForeBitmap?.height != size) {
-            scaleForeBitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
-        }
-        if (scaleForeCanvas == null) {
-            scaleForeBitmap?.also { scaleForeCanvas = Canvas(it) }
-        }
-        scaleForeCanvas?.also { drawForeScale(it, mCenter, mScaleForePaint, mProgressPercent) }
-    }
-
-    private fun drawBackScale(canvas: Canvas?, size: Float) {
-        val colors = intArrayOf(RED, GREEN, BLUE)
-        mScaleBackPaint?.shader = SweepGradient(size / 2, size / 2, colors, null)
-        canvas?.rotate(90f, size / 2, size / 2)
-        mScaleBackPaint?.also { canvas?.drawCircle(size / 2, size / 2, size, it) }
-        canvas?.rotate(-90f, size / 2, size / 2)
-    }
-
-    private fun drawForeScale(canvas: Canvas?, center: PointF, paint: Paint?, percent: Float = 1f) {
+    private fun drawForeScale(canvas: Canvas?, centerX: Float, centerY: Float, paint: Paint?, percent: Float = 1f) {
         // 记录已经旋转的角度
         var degree = 0f
         // 弧度结束3π/2
@@ -563,25 +386,32 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
         // 开始旋转的角度
         val startDegree = (180 * 3 / 4).toFloat()
         // 旋转到开始的位置
-        canvas?.rotate(startDegree, center.x, center.y)
+        canvas?.rotate(startDegree, centerX, centerY)
         degree += startDegree
         for (i in 0 until mDottedLineCount) {
             if (i > (mDottedLineCount - 1) * percent) break
             mScale.apply {
-                left = center.x + mScaleInsideRadius
-                top = center.y - 6
+                left = centerX + mScaleInsideRadius
+                top = centerY - 6
                 // 设置特殊的刻度线
-                right = center.x + if (mSpecialScales?.contains(i) == true) mScaleOutsideSpecialRadius else mScaleOutsideRadius
-                bottom = center.y + 6
+                right = centerX + if (mSpecialScales?.contains(i) == true) mScaleOutsideSpecialRadius else mScaleOutsideRadius
+                bottom = centerY + 6
             }
             // 绘制圆角矩形
             paint?.also { canvas?.drawRoundRect(mScale, 6f, 6f, it) }
             // 旋转画布，为下次绘制做准备
-            canvas?.rotate(gapDegrees, center.x, center.y)
+            canvas?.rotate(gapDegrees, centerX, centerY)
             degree += gapDegrees
             Log.i(TAG(), "draw scale for:$i")
         }
-        canvas?.rotate(-degree, center.x, center.y)
+        canvas?.rotate(-degree, centerX, centerY)
+    }
+
+    private fun drawProgressBar(canvas: Canvas?, rect: RectF, paint: Paint?, percent: Float = 1f) {
+        val angle = 270f * percent
+        canvas?.rotate(180f * 3 / 4, rect.centerX(), rect.centerY())
+        paint?.also { canvas?.drawArc(rect, 0f, angle, false, it) }
+        canvas?.rotate(-180f * 3 / 4, rect.centerX(), rect.centerY())
     }
 
     /**
@@ -593,9 +423,95 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
         canvas.drawLine(0f, measuredHeight.toFloat() / 2, measuredWidth.toFloat(), measuredHeight.toFloat() / 2, paint)
     }
 
+    private fun drawStaticProgressBar(canvas: Canvas) {
+        // 绘制进度条的边界
+        val rectF = RectF().apply {
+            left = (mRect.width() - mRect.width() * mProgressBarPercent) / 2 + mRect.left
+            top = (mRect.height() - mRect.height() * mProgressBarPercent) / 2 + mRect.top
+            bottom = top + mRect.height() * mProgressBarPercent
+            right = left + mRect.width() * mProgressBarPercent
+        }
+        drawProgressBar(canvas, rectF, mProgressStaticPaint)
+    }
+
     private fun drawProgressBar(canvas: Canvas) {
-        canvas.rotate(180f * 3 / 4, mProgressRect.centerX(), mProgressRect.centerY())
-        mProgressStaticPaint?.also { canvas.drawArc(mProgressRect, 0f, 270f, false, it) }
-        canvas.rotate(-180f * 3 / 4, mProgressRect.centerX(), mProgressRect.centerY())
+        // 判断绘制点
+//        val size = min(measuredHeight, measuredWidth)
+        val top = (measuredHeight - mRect.height()) / 2
+        val left = (measuredWidth - mRect.width()) / 2
+        // 保存当前图层
+        val layer = canvas.saveLayer(mRect, null, ALL_SAVE_FLAG)
+        // 绘制背景图片
+        mColorBitmap?.also { canvas.drawBitmap(it, left, top, mGradientColorPaint) }
+        // 设置画笔样式
+        mForePaint?.xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_IN)
+        // 绘制前景图片
+        mProgressBarBitmap?.also { canvas.drawBitmap(it, left, top, mForePaint) }
+        // 恢复图层
+        canvas.restoreToCount(layer)
+    }
+
+    /**
+     * 更新渐变颜色的图片
+     */
+    private fun updateColorBitmap() {
+        val size = min(mRect.height(), mRect.width())
+        if (size <= 0) return
+        // 绘制刻度的背景，刻度线背景只需要绘制一次，因为背景几乎不变动
+        if (mColorBitmap == null) {
+            mColorBitmap = Bitmap.createBitmap(size.toInt(), size.toInt(), Bitmap.Config.ARGB_8888)
+            if (mColorCanvas == null) {
+                mColorBitmap?.also { mColorCanvas = Canvas(it) }
+            }
+            // 设置渐变色画笔
+            mGradientColorPaint?.shader = SweepGradient(size / 2, size / 2, intArrayOf(RED, GREEN, BLUE), null)
+            // 旋转画布
+            mColorCanvas?.rotate(90f, size / 2, size / 2)
+            // 绘制渐变色
+            mGradientColorPaint?.also { mColorCanvas?.drawCircle(size / 2, size / 2, size, it) }
+            // 恢复画布的旋转
+            mColorCanvas?.rotate(-90f, size / 2, size / 2)
+        }
+    }
+
+    /**
+     * 更新刻度线的bitmap
+     */
+    private fun updateScaleBitmap() {
+        val size = min(measuredHeight, measuredWidth)
+        if (size <= 0) return
+
+        // 绘制刻度的前景，每次更新都需要绘制
+        if (mScaleBitmap == null || mScaleBitmap?.width != size || mScaleBitmap?.height != size) {
+            mScaleBitmap = Bitmap.createBitmap(mRect.width().toInt(), mRect.height().toInt(), Bitmap.Config.ARGB_8888)
+        }
+        if (mScaleCanvas == null) {
+            mScaleBitmap?.also { mScaleCanvas = Canvas(it) }
+        }
+        mScaleCanvas?.also { drawForeScale(it, mRect.width() / 2, mRect.height() / 2, mForePaint, mProgressPercent) }
+    }
+
+    /**
+     * 更新进度条的bitmap
+     */
+    private fun updateProgressBarBitmap() {
+        val size = min(measuredHeight, measuredWidth)
+        if (size <= 0) return
+
+        // 绘制进度条，每次更新都需要绘制
+        if (mProgressBarBitmap == null || mProgressBarBitmap?.width != size || mProgressBarBitmap?.height != size) {
+            mProgressBarBitmap = Bitmap.createBitmap(mRect.width().toInt(), mRect.height().toInt(), Bitmap.Config.ARGB_8888)
+        }
+        if (mProgressBarCanvas == null) {
+            mProgressBarBitmap?.also { mProgressBarCanvas = Canvas(it) }
+        }
+        // 绘制进度条的边界
+        val rectF = RectF().apply {
+            left = mRect.width() / 2 - mRect.width() * mProgressBarPercent / 2
+            top = mRect.height() / 2 - mRect.height() * mProgressBarPercent / 2
+            bottom = mRect.height() / 2 + mRect.height() * mProgressBarPercent / 2
+            right = mRect.width() / 2 + mRect.width() * mProgressBarPercent / 2
+        }
+        mProgressBarCanvas?.also { drawProgressBar(it, rectF, mProgressStaticPaint, mProgressPercent) }
     }
 }
