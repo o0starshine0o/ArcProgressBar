@@ -27,5 +27,20 @@
         <attr name="titleColor" format="color" />
         <attr name="titleAngle" format="float" />
         <attr name="titlePercent" format="fraction" />
+        <attr name="titleDesc" format="string" />
+        <attr name="titleDescSize" format="dimension" />
+        <attr name="titleDescColor" format="color" />
+        <attr name="titleDescAngle" format="float" />
+        <attr name="titleDescPercent" format="fraction" />
+        <attr name="subTitle" format="string" />
+        <attr name="subTitleSize" format="dimension" />
+        <attr name="subTitleColor" format="color" />
+        <attr name="subTitleAngle" format="float" />
+        <attr name="subTitlePercent" format="fraction" />
+        <attr name="subTitleDesc" format="string" />
+        <attr name="subTitleDescSize" format="dimension" />
+        <attr name="subTitleDescColor" format="color" />
+        <attr name="subTitleDescAngle" format="float" />
+        <attr name="subTitleDescPercent" format="fraction" />
     </declare-styleable>
 </resources>

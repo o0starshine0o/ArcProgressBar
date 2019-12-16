@@ -132,9 +132,9 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
      *
      */
     private var mTitle: DrawString? = DrawString("主标题", BLACK, 180f, 0.5f, 40f)
-    private var mTitleDesc: DrawString? = null
-    private var mSubTitle: DrawString? = null
-    private var mSubTitleDesc: DrawString? = null
+    private var mTitleDesc: DrawString? = DrawString("主标题描述", BLACK, 180f, 0.5f, 40f)
+    private var mSubTitle: DrawString? = DrawString("副标题", BLACK, 180f, 0.5f, 40f)
+    private var mSubTitleDesc: DrawString? = DrawString("副标题描述", BLACK, 180f, 0.5f, 40f)
 
     /**
      * 外层背景圆弧画笔
@@ -252,6 +252,27 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
             angle = typedArray.getFloat(R.styleable.ArcProgressBar_titleAngle, 0f)
             percent = typedArray.getFraction(R.styleable.ArcProgressBar_titlePercent, 1, 1, 0.0f)
         }
+        mTitleDesc?.apply {
+            string = typedArray.getString(R.styleable.ArcProgressBar_titleDesc) ?: ""
+            color = typedArray.getColor(R.styleable.ArcProgressBar_titleDescColor, BLACK)
+            size = typedArray.getDimension(R.styleable.ArcProgressBar_titleDescSize, 20.0f)
+            angle = typedArray.getFloat(R.styleable.ArcProgressBar_titleDescAngle, 0f)
+            percent = typedArray.getFraction(R.styleable.ArcProgressBar_titleDescPercent, 1, 1, 0.0f)
+        }
+        mSubTitle?.apply {
+            string = typedArray.getString(R.styleable.ArcProgressBar_subTitle) ?: ""
+            color = typedArray.getColor(R.styleable.ArcProgressBar_subTitleColor, BLACK)
+            size = typedArray.getDimension(R.styleable.ArcProgressBar_subTitleSize, 20.0f)
+            angle = typedArray.getFloat(R.styleable.ArcProgressBar_subTitleAngle, 0f)
+            percent = typedArray.getFraction(R.styleable.ArcProgressBar_subTitlePercent, 1, 1, 0.0f)
+        }
+        mSubTitleDesc?.apply {
+            string = typedArray.getString(R.styleable.ArcProgressBar_subTitleDesc) ?: ""
+            color = typedArray.getColor(R.styleable.ArcProgressBar_subTitleDescColor, BLACK)
+            size = typedArray.getDimension(R.styleable.ArcProgressBar_subTitleDescSize, 20.0f)
+            angle = typedArray.getFloat(R.styleable.ArcProgressBar_subTitleDescAngle, 0f)
+            percent = typedArray.getFraction(R.styleable.ArcProgressBar_subTitleDescPercent, 1, 1, 0.0f)
+        }
         typedArray.recycle()
     }
 
@@ -358,12 +379,9 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
         drawProgressBar(canvas)
         // 绘制标题
         mTitle?.apply { drawText(canvas, this) }
-//        // 绘制标题描述
-//        drawText(canvas)
-//        // 绘制副标题
-//        drawText(canvas)
-//        // 绘制副标题描述
-//        drawText(canvas)
+        mTitleDesc?.apply { drawText(canvas, this) }
+        mSubTitle?.apply { drawText(canvas, this) }
+        mSubTitleDesc?.apply { drawText(canvas, this) }
     }
 
     private val screenWH: IntArray

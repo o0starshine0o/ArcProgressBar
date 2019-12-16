@@ -18,7 +18,19 @@
         app:specialScales="9,29,49"
         app:title="今日步数"
         app:titleAngle="180"
-        app:titlePercent="40%"
-        app:titleSize="20sp" />
+        app:titlePercent="36%"
+        app:titleSize="18sp"
+        app:titleDesc="8888"
+        app:titleDescAngle="180"
+        app:titleDescPercent="10%"
+        app:titleDescSize="50sp"
+        app:subTitle="运动步数"
+        app:subTitleAngle="0"
+        app:subTitlePercent="8%"
+        app:subTitleSize="18sp"
+        app:subTitleDesc="8888"
+        app:subTitleDescAngle="0"
+        app:subTitleDescPercent="30%"
+        app:subTitleDescSize="30sp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
