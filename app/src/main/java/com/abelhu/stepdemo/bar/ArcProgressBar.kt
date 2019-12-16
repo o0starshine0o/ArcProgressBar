@@ -5,7 +5,6 @@ import android.content.res.Resources
 import android.graphics.*
 import android.graphics.Canvas.ALL_SAVE_FLAG
 import android.graphics.Color.*
-import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.DisplayMetrics
 import android.util.Log
@@ -38,6 +37,11 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
      * 静态进度条的画笔
      */
     private var mProgressStaticPaint: Paint? = null
+
+    /**
+     * 静态进度条的画笔
+     */
+    private var mTextPaint: Paint? = null
     /**
      * 刻度线内侧半径百分比
      */
@@ -125,10 +129,12 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
      */
     private var mRect = RectF()
     /**
-     * 刻度需要绘制圆角矩形
+     *
      */
-    private var mScale = RectF()
-
+    private var mTitle: DrawString? = DrawString("主标题", BLACK, 180f, 0.5f, 40f)
+    private var mTitleDesc: DrawString? = null
+    private var mSubTitle: DrawString? = null
+    private var mSubTitleDesc: DrawString? = null
 
     /**
      * 外层背景圆弧画笔
@@ -238,6 +244,14 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
         mProgressMax = typedArray.getInteger(R.styleable.ArcProgressBar_progressMax, mProgressMax)
         mProgressMin = typedArray.getInteger(R.styleable.ArcProgressBar_progressMin, mProgressMin)
         mProgress = typedArray.getInteger(R.styleable.ArcProgressBar_progress, mProgress)
+
+        mTitle?.apply {
+            string = typedArray.getString(R.styleable.ArcProgressBar_title) ?: ""
+            color = typedArray.getColor(R.styleable.ArcProgressBar_titleColor, BLACK)
+            size = typedArray.getDimension(R.styleable.ArcProgressBar_titleSize, 20.0f)
+            angle = typedArray.getFloat(R.styleable.ArcProgressBar_titleAngle, 0f)
+            percent = typedArray.getFraction(R.styleable.ArcProgressBar_titlePercent, 1, 1, 0.0f)
+        }
         typedArray.recycle()
     }
 
@@ -267,6 +281,12 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
         mProgressStaticPaint?.style = Paint.Style.STROKE
         mProgressStaticPaint?.strokeWidth = 10f
         mProgressStaticPaint?.strokeCap = Paint.Cap.ROUND
+        // 设置文字的画笔
+        mTextPaint = Paint()
+        mTextPaint?.isAntiAlias = true
+        mTextPaint?.isDither = true
+        mTextPaint?.isFilterBitmap = true
+        mTextPaint?.textAlign = Paint.Align.CENTER
         // 设置特殊的刻度线
         mSpecialScales = mSpecialScaleString?.split(Regex("[^0-9]+"))?.map { it.toInt() }
 
@@ -336,6 +356,14 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
         drawScale(canvas)
         // 绘制动态进度条
         drawProgressBar(canvas)
+        // 绘制标题
+        mTitle?.apply { drawText(canvas, this) }
+//        // 绘制标题描述
+//        drawText(canvas)
+//        // 绘制副标题
+//        drawText(canvas)
+//        // 绘制副标题描述
+//        drawText(canvas)
     }
 
     private val screenWH: IntArray
@@ -385,12 +413,14 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
         val gapDegrees = totalDegrees / (mDottedLineCount - 1)
         // 开始旋转的角度
         val startDegree = (180 * 3 / 4).toFloat()
+        // 刻度的圆角矩形
+        val scaleRect = RectF()
         // 旋转到开始的位置
         canvas?.rotate(startDegree, centerX, centerY)
         degree += startDegree
         for (i in 0 until mDottedLineCount) {
             if (i > (mDottedLineCount - 1) * percent) break
-            mScale.apply {
+            scaleRect.apply {
                 left = centerX + mScaleInsideRadius
                 top = centerY - 6
                 // 设置特殊的刻度线
@@ -398,7 +428,7 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
                 bottom = centerY + 6
             }
             // 绘制圆角矩形
-            paint?.also { canvas?.drawRoundRect(mScale, 6f, 6f, it) }
+            paint?.also { canvas?.drawRoundRect(scaleRect, 6f, 6f, it) }
             // 旋转画布，为下次绘制做准备
             canvas?.rotate(gapDegrees, centerX, centerY)
             degree += gapDegrees
@@ -513,5 +543,13 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
             right = mRect.width() / 2 + mRect.width() * mProgressBarPercent / 2
         }
         mProgressBarCanvas?.also { drawProgressBar(it, rectF, mProgressStaticPaint, mProgressPercent) }
+    }
+
+    private fun drawText(canvas: Canvas, text: DrawString) {
+        mTextPaint?.apply {
+            color = text.color
+            textSize = text.size
+            canvas.drawText(text.string, text.getPosition(mRect).x, text.getPosition(mRect).y, this)
+        }
     }
 }
