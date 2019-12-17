@@ -1,11 +1,13 @@
 package com.qicode.arcprogressbar
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.*
 import android.graphics.Canvas.ALL_SAVE_FLAG
 import android.graphics.Color.*
 import android.util.AttributeSet
 import android.view.View
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import kotlin.math.*
 
 
@@ -26,6 +28,17 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
      * 目前进度值
      */
     var progress = 400
+        set(value) {
+            if (value != field) {
+                if (value < field) {
+                    // 清空画布
+                    scaleCanvas?.drawColor(TRANSPARENT, PorterDuff.Mode.CLEAR)
+                    progressBarCanvas?.drawColor(TRANSPARENT, PorterDuff.Mode.CLEAR)
+                }
+                field = value
+                postInvalidate()
+            }
+        }
     /**
      * 目前进度的百分比
      */
@@ -148,11 +161,11 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
     /**
      * 背景渐变色
      */
-    var backColors:IntArray? = intArrayOf(BLUE, GREEN, RED)
+    var backColors: IntArray? = intArrayOf(BLUE, GREEN, RED)
     /**
      * 背景渐变色位置分布
      */
-    var backColorPositions:FloatArray? = null
+    var backColorPositions: FloatArray? = null
 
     init {
         // 获取定义属性
@@ -463,5 +476,16 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
         }
         // 恢复画笔的颜色
         paint.color = paintColor
+    }
+
+    fun progress(progress: Int, toMax: Boolean = false, during: Long = 500) {
+        var animator: ObjectAnimator? = null
+        if (toMax) {
+            animator = ObjectAnimator.ofInt(this, "progress", this.progress, progressMax, progress).setDuration(during * 2)
+        } else {
+            ObjectAnimator.ofInt(this, "progress", this.progress, progress).setDuration(during).start()
+        }
+        animator?.interpolator = FastOutSlowInInterpolator()
+        animator?.start()
     }
 }
