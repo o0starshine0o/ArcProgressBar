@@ -1,27 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="ArcProgressBar">
-        <attr name="arcDistance" format="integer" />
-        <attr name="arcBgColor" format="color" />
-        <attr name="progressTextRunColor" format="color" />
-        <attr name="arcForeStartColor" format="color" />
-        <attr name="arcForeEndColor" format="color" />
-        <attr name="dottedDefaultColor" format="color" />
-        <attr name="dottedRunColor" format="color" />
-        <attr name="dottedLineCount" format="integer" />
-        <attr name="dottedLineWidth" format="integer" />
-        <attr name="dottedLineHeight" format="integer" />
-        <attr name="lineDistance" format="integer" />
+        <attr name="scaleCount" format="integer" />
         <attr name="progressMax" format="integer" />
         <attr name="progressMin" format="integer" />
         <attr name="progress" format="integer" />
-        <attr name="progressTextSize" format="integer" />
-        <attr name="progressDesc" format="string" />
-        <attr name="arcUseGradient" format="boolean" />
         <attr name="scaleInsidePercent" format="fraction" />
         <attr name="scaleOutsidePercent" format="fraction" />
         <attr name="scaleOutsideSpecialPercent" format="fraction" />
         <attr name="specialScales" format="string" />
+        <attr name="scaleValueSize" format="dimension" />
+        <attr name="scaleValueColor" format="color" />
+        <attr name="scaleValuePercent" format="fraction" />
+        <attr name="paintWidth" format="dimension" />
+        <attr name="paintColor" format="color" />
         <attr name="title" format="string" />
         <attr name="titleSize" format="dimension" />
         <attr name="titleColor" format="color" />
@@ -42,5 +34,7 @@
         <attr name="subTitleDescColor" format="color" />
         <attr name="subTitleDescAngle" format="float" />
         <attr name="subTitleDescPercent" format="fraction" />
+        <attr name="showCoordinate" format="boolean" />
+        <attr name="showScaleValue" format="boolean" />
     </declare-styleable>
 </resources>
