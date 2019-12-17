@@ -2,11 +2,9 @@ package com.abelhu.stepdemo
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.qicode.arcprogressbar.DrawString
-import com.qicode.extension.TAG
 import com.qicode.extension.dp
 import com.qicode.extension.sp
 import kotlinx.android.synthetic.main.activity_main.*
@@ -22,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         initProgress()
 
         randomProgress.setOnClickListener(this::randomProgress)
-        randomProgressFull.setOnClickListener(this::randomProgressFull)
+        randomSubProgress.setOnClickListener(this::randomSubProgress)
     }
 
     private fun initProgress() {
@@ -38,6 +36,10 @@ class MainActivity : AppCompatActivity() {
             progressMin = 1
             progressMax = 15000
             progress = 12345
+            // 进度
+            subProgressMin = 1
+            subProgressMax = 15000
+            subProgress = 1234
             // 画笔宽度
             paintWidth = 5.dp
             // 画笔颜色
@@ -70,12 +72,10 @@ class MainActivity : AppCompatActivity() {
     private fun randomProgress(view: View) {
         // 500ms到达指定位置
         progressBar.progress(Random.nextInt(progressBar.progressMin, progressBar.progressMax), false, 500)
-        Log.i(TAG(), "current percent:${progressBar.progressPercent}")
     }
 
-    private fun randomProgressFull(view: View) {
-        // 500ms先到达最大值，500ms再到达指定位置
-        progressBar.progress(Random.nextInt(progressBar.progressMin, progressBar.progressMax), true, 500)
-        Log.i(TAG(), "current percent:${progressBar.progressPercent}")
+    private fun randomSubProgress(view: View) {
+        // 500ms到达指定位置
+        progressBar.subProgress(Random.nextInt(progressBar.subProgressMin, progressBar.subProgressMax), false, 500)
     }
 }

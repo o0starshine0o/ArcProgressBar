@@ -17,33 +17,55 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
      */
     var scaleCount = 59
     /**
-     * 进度最小值
+     * 刻度线进度最小值
      */
-    var progressMin = 100
+    var progressMin = 1
     /**
-     * 进度最大值
+     * 刻度线进度最大值
      */
-    var progressMax = 500
+    var progressMax = 15000
     /**
-     * 目前进度值
+     * 刻度线目前进度值
      */
-    var progress = 400
+    var progress = 6666
         set(value) {
             if (value != field) {
-                if (value < field) {
-                    // 清空画布
-                    scaleCanvas?.drawColor(TRANSPARENT, PorterDuff.Mode.CLEAR)
-                    progressBarCanvas?.drawColor(TRANSPARENT, PorterDuff.Mode.CLEAR)
-                }
+                if (value < field) scaleCanvas?.drawColor(TRANSPARENT, PorterDuff.Mode.CLEAR)
                 field = value
+                titleDesc?.apply { string = field.toString() }
                 postInvalidate()
             }
         }
     /**
-     * 目前进度的百分比
+     * 刻度线目前进度的百分比
      */
-    val progressPercent
+    private val progressPercent
         get() = max(min((progress - progressMin).toFloat() / (progressMax - progressMin), 1f), 0f)
+    /**
+     * 进度条进度最小值
+     */
+    var subProgressMin = 1
+    /**
+     * 进度条进度最大值
+     */
+    var subProgressMax = 15000
+    /**
+     * 进度条目前进度值
+     */
+    var subProgress = 6363
+        set(value) {
+            if (value != field) {
+                if (value < field) progressBarCanvas?.drawColor(TRANSPARENT, PorterDuff.Mode.CLEAR)
+                field = value
+                subTitleDesc?.apply { string = field.toString() }
+                postInvalidate()
+            }
+        }
+    /**
+     * 进度条目前进度的百分比
+     */
+    private val subProgressPercent
+        get() = max(min((subProgress - subProgressMin).toFloat() / (subProgressMax - subProgressMin), 1f), 0f)
     /**
      * 画笔
      */
@@ -180,6 +202,9 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
         progressMax = typedArray.getInteger(R.styleable.ArcProgressBar_progressMax, progressMax)
         progressMin = typedArray.getInteger(R.styleable.ArcProgressBar_progressMin, progressMin)
         progress = typedArray.getInteger(R.styleable.ArcProgressBar_progress, progress)
+        subProgressMax = typedArray.getInteger(R.styleable.ArcProgressBar_subProgressMax, subProgressMax)
+        subProgressMin = typedArray.getInteger(R.styleable.ArcProgressBar_subProgressMin, subProgressMin)
+        subProgress = typedArray.getInteger(R.styleable.ArcProgressBar_subProgress, subProgress)
         paintWidth = typedArray.getDimension(R.styleable.ArcProgressBar_paintWidth, paintWidth)
         paintColor = typedArray.getColor(R.styleable.ArcProgressBar_paintColor, paintColor)
         showCoordinate = typedArray.getBoolean(R.styleable.ArcProgressBar_showCoordinate, showCoordinate)
@@ -336,7 +361,7 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
             bottom = rect.height() / 2 + rect.height() * progressBarPercent / 2
             right = rect.width() / 2 + rect.width() * progressBarPercent / 2
         }
-        progressBarCanvas?.also { drawProgressBar(it, rectF, paint, progressPercent) }
+        progressBarCanvas?.also { drawProgressBar(it, rectF, paint, subProgressPercent) }
     }
 
     /**
@@ -484,6 +509,17 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
             animator = ObjectAnimator.ofInt(this, "progress", this.progress, progressMax, progress).setDuration(during * 2)
         } else {
             ObjectAnimator.ofInt(this, "progress", this.progress, progress).setDuration(during).start()
+        }
+        animator?.interpolator = FastOutSlowInInterpolator()
+        animator?.start()
+    }
+
+    fun subProgress(progress: Int, toMax: Boolean = false, during: Long = 500) {
+        var animator: ObjectAnimator? = null
+        if (toMax) {
+            animator = ObjectAnimator.ofInt(this, "subProgress", this.subProgress, subProgressMax, progress).setDuration(during * 2)
+        } else {
+            ObjectAnimator.ofInt(this, "subProgress", this.subProgress, progress).setDuration(during).start()
         }
         animator?.interpolator = FastOutSlowInInterpolator()
         animator?.start()

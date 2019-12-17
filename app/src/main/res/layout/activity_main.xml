@@ -31,6 +31,9 @@
         app:showCoordinate="false"
         app:showScaleValue="true"
         app:specialScales="9,29,49"
+        app:subProgress="10000"
+        app:subProgressMax="15000"
+        app:subProgressMin="1"
         app:subTitle="@string/sub_title"
         app:subTitleAngle="0"
         app:subTitleDesc="@string/sub_title_desc"
@@ -55,11 +58,11 @@
         android:padding="8dp"
         android:text="@string/random_progress"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/randomProgressFull"
+        app:layout_constraintEnd_toStartOf="@id/randomSubProgress"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/randomProgressFull"
+        android:id="@+id/randomSubProgress"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="8dp"
