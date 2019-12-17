@@ -1,4 +1,4 @@
-package com.abelhu.stepdemo.bar
+package com.qicode.arcprogressbar
 
 import android.content.Context
 import android.graphics.*
@@ -6,7 +6,6 @@ import android.graphics.Canvas.ALL_SAVE_FLAG
 import android.graphics.Color.*
 import android.util.AttributeSet
 import android.view.View
-import com.abelhu.stepdemo.R
 import kotlin.math.*
 
 
@@ -447,6 +446,7 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
      * 绘制文本
      */
     private fun drawText(canvas: Canvas, text: DrawString) {
+        mPaint.style = Paint.Style.FILL
         mPaint.apply {
             color = text.color
             textSize = text.size

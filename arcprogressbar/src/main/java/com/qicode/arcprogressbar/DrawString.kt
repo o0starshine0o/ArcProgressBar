@@ -1,4 +1,4 @@
-package com.abelhu.stepdemo.bar
+package com.qicode.arcprogressbar
 
 import android.graphics.PointF
 import android.graphics.RectF

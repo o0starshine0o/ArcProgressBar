@@ -1,2 +1,2 @@
-include ':app'
+include ':app', ':arcprogressbar'
 rootProject.name='StepDemo'

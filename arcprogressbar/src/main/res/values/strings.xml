@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ArcProgressBar</string>
+    <string name="title">Title</string>
+    <string name="title_desc">8888</string>
+    <string name="sub_title">SubTitle</string>
+    <string name="sub_title_desc">8381</string>
+</resources>

@@ -7,7 +7,7 @@
     android:background="@color/colorPrimary"
     tools:context=".MainActivity">
 
-    <com.abelhu.stepdemo.bar.ArcProgressBar
+    <com.qicode.arcprogressbar.ArcProgressBar
         android:id="@+id/progressBar"
         android:layout_width="0dp"
         android:layout_height="0dp"
