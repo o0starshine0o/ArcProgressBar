@@ -8,6 +8,7 @@
         <attr name="subProgressMax" format="integer" />
         <attr name="subProgressMin" format="integer" />
         <attr name="subProgress" format="integer" />
+        <attr name="progressBarPercent" format="fraction" />
         <attr name="scaleInsidePercent" format="fraction" />
         <attr name="scaleOutsidePercent" format="fraction" />
         <attr name="scaleOutsideSpecialPercent" format="fraction" />

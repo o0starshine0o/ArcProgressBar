@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BezierMaskView">
+        <attr name="smooth" format="float" />
+        <attr name="groundSize" format="dimension" />
+        <attr name="groundHeight" format="dimension" />
+        <attr name="groundColor" format="color" />
+    </declare-styleable>
+</resources>

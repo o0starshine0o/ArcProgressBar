@@ -1,32 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.qicode.beziermask.BezierMaskView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/colorPrimary"
+    app:groundHeight="40dp"
+    app:groundSize="26dp"
+    app:smooth="0.2"
     tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/randomProgress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="@string/random_progress"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/randomSubProgress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="@string/random_progress_full"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.qicode.arcprogressbar.ArcProgressBar
         android:id="@+id/progressBar"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:paintColor="@android:color/white"
         app:paintWidth="4dp"
         app:progress="14000"
+        app:progressBarPercent="65%"
         app:progressMax="15000"
         app:progressMin="1"
         app:scaleCount="59"
-        app:scaleInsidePercent="80%"
-        app:scaleOutsidePercent="88%"
-        app:scaleOutsideSpecialPercent="91%"
+        app:scaleInsidePercent="70%"
+        app:scaleOutsidePercent="78%"
+        app:scaleOutsideSpecialPercent="81%"
         app:scaleValueColor="@android:color/white"
-        app:scaleValuePercent="62%"
+        app:scaleValuePercent="52%"
         app:scaleValueSize="16sp"
         app:showCoordinate="false"
         app:showScaleValue="true"
@@ -40,35 +63,30 @@
         app:subTitleDescAngle="0"
         app:subTitleDescPercent="30%"
         app:subTitleDescSize="30sp"
-        app:subTitlePercent="8%"
+        app:subTitlePercent="12%"
         app:subTitleSize="18sp"
         app:title="@string/title"
         app:titleAngle="180"
         app:titleDesc="8888"
         app:titleDescAngle="180"
-        app:titleDescPercent="10%"
+        app:titleDescPercent="6%"
         app:titleDescSize="50sp"
-        app:titlePercent="40%"
+        app:titlePercent="30%"
         app:titleSize="18sp" />
 
     <Button
-        android:id="@+id/randomProgress"
+        android:id="@+id/button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="@string/random_progress"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/randomSubProgress"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/randomSubProgress"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="@string/random_progress_full"
+        android:layout_margin="40dp"
+        android:background="@drawable/round_rect_gradient_yellow"
+        android:padding="12dp"
+        android:text="@string/button"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/randomProgress" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.4" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</com.qicode.beziermask.BezierMaskView>

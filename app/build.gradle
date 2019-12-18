@@ -32,6 +32,9 @@ dependencies {
     // 圆弧进度条，本地或者网络库
     implementation project(path: ':arcprogressbar')
 //    implementation 'com.qicode:arcprogressbar:1.0.0'
+    // 贝塞尔曲线遮罩，本地或者网络库
+    implementation project(path: ':beziermask')
+//    implementation 'com.qicode:arcprogressbar:1.0.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

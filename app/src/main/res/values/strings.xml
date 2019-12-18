@@ -4,6 +4,7 @@
     <string name="title_desc">8888</string>
     <string name="sub_title">SubTitle</string>
     <string name="sub_title_desc">8381</string>
-    <string name="random_progress">RandomProgress</string>
-    <string name="random_progress_full">RandomProgressFull</string>
+    <string name="random_progress">Progress</string>
+    <string name="random_progress_full">SubProgress</string>
+    <string name="button">Button</string>
 </resources>

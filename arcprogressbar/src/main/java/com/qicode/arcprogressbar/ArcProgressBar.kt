@@ -199,6 +199,7 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
         scaleValueSize = typedArray.getDimension(R.styleable.ArcProgressBar_scaleValueSize, scaleValueSize)
         scaleValueColor = typedArray.getColor(R.styleable.ArcProgressBar_scaleValueColor, scaleValueColor)
         scaleValuePercent = typedArray.getFraction(R.styleable.ArcProgressBar_scaleValuePercent, 1, 1, scaleValuePercent)
+        progressBarPercent = typedArray.getFraction(R.styleable.ArcProgressBar_progressBarPercent, 1, 1, progressBarPercent)
         progressMax = typedArray.getInteger(R.styleable.ArcProgressBar_progressMax, progressMax)
         progressMin = typedArray.getInteger(R.styleable.ArcProgressBar_progressMin, progressMin)
         progress = typedArray.getInteger(R.styleable.ArcProgressBar_progress, progress)
