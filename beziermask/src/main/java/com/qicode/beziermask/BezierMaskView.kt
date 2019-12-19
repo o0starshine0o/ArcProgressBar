@@ -68,16 +68,21 @@ class BezierMaskView @JvmOverloads constructor(context: Context, attrs: Attribut
     }
 
     private fun drawGround(canvas: Canvas?) {
-        val ground = measuredHeight - groundHeight
-        val top = measuredHeight - groundHeight - groundSize
-        val percent = 0.5f
         path.reset()
+        getPath(path)
+        canvas?.drawPath(path, paint)
+    }
+
+    public fun getPath(path: Path, excludeRadius:Float = 0f):Path{
+        val ground = measuredHeight - groundHeight - excludeRadius
+        val top = measuredHeight - groundHeight - groundSize - excludeRadius
+        val percent = 0.5f
         path.moveTo(0f, measuredHeight.toFloat())
         path.lineTo(0f, ground)
         path.quadTo(measuredWidth * (percent - smooth), top, measuredWidth * 0.5f, top)
         path.quadTo(measuredWidth * (percent + smooth), top, measuredWidth.toFloat(), ground)
         path.lineTo(measuredWidth.toFloat(), measuredHeight.toFloat())
         path.close()
-        canvas?.drawPath(path, paint)
+        return path
     }
 }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bubblePrimary">#FFF35C</color>
+    <color name="bubblePrimaryDark">#FFD954</color>
+    <color name="bubblePrimaryLight">#ddFFF35C</color>
+
+    <color name="bubbleSecondary">#FFA399</color>
+    <color name="bubbleSecondaryDark">#E0726B</color>
+    <color name="bubbleSecondaryLight">#ddFFA399</color>
+</resources>

@@ -1,2 +1,2 @@
-include ':app', ':arcprogressbar', ':beziermask'
+include ':app', ':arcprogressbar', ':beziermask', ':bubbleview', ':utils'
 rootProject.name='StepDemo'

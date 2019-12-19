@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:ordering="together">
+    <objectAnimator
+        android:duration="2000"
+        android:interpolator="@android:anim/accelerate_decelerate_interpolator"
+        android:propertyName="translationY"
+        android:repeatCount="infinite"
+        android:repeatMode="reverse"
+        android:valueFrom="0"
+        android:valueTo="10"
+        android:valueType="floatType" />
+</set>

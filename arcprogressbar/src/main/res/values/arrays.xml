@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="color_gradient">
+        <item>@color/colorPrimary</item>
+        <item>@color/colorSecondary</item>
+    </integer-array>
+
+    <string-array name="position_gradient">
+        <item>0.125</item>
+        <item>0.875</item>
+    </string-array>
+</resources>

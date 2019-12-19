@@ -5,7 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimary"
+    android:background="@mipmap/bg_sky"
     app:groundHeight="40dp"
     app:groundSize="26dp"
     app:smooth="0.2"
@@ -51,6 +51,7 @@
         app:scaleValueColor="@android:color/white"
         app:scaleValuePercent="52%"
         app:scaleValueSize="16sp"
+        app:showColorGradient="false"
         app:showCoordinate="false"
         app:showScaleValue="true"
         app:specialScales="9,29,49"
@@ -78,9 +79,10 @@
         android:id="@+id/button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="40dp"
-        android:background="@drawable/round_rect_gradient_yellow"
-        android:padding="12dp"
+        android:layout_margin="30dp"
+        android:background="@mipmap/round_rect_gradient_yellow_shadow"
+        android:paddingTop="12dp"
+        android:paddingBottom="22dp"
         android:text="@string/button"
         android:textColor="@android:color/white"
         android:textSize="18sp"
@@ -88,5 +90,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintWidth_percent="0.4" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:itemCount="0"
+        tools:listitem="@layout/item_bubble" />
 
 </com.qicode.beziermask.BezierMaskView>

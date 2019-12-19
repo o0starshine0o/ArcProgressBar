@@ -7,6 +7,8 @@ import android.graphics.Canvas.ALL_SAVE_FLAG
 import android.graphics.Color.*
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.view.marginLeft
+import androidx.core.view.marginTop
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import kotlin.math.*
 
@@ -30,7 +32,6 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
     var progress = 6666
         set(value) {
             if (value != field) {
-                if (value < field) scaleCanvas?.drawColor(TRANSPARENT, PorterDuff.Mode.CLEAR)
                 field = value
                 titleDesc?.apply { string = field.toString() }
                 postInvalidate()
@@ -55,7 +56,6 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
     var subProgress = 6363
         set(value) {
             if (value != field) {
-                if (value < field) progressBarCanvas?.drawColor(TRANSPARENT, PorterDuff.Mode.CLEAR)
                 field = value
                 subTitleDesc?.apply { string = field.toString() }
                 postInvalidate()
@@ -148,6 +148,10 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
      */
     var showCoordinate = false
     /**
+     * 是否显示渐变色
+     */
+    var showColorGradient = false
+    /**
      * 是否显示刻度值
      */
     var showScaleValue = true
@@ -183,11 +187,11 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
     /**
      * 背景渐变色
      */
-    var backColors: IntArray? = intArrayOf(BLUE, GREEN, RED)
+    var backColors: IntArray? = context.resources.getIntArray(R.array.color_gradient)
     /**
      * 背景渐变色位置分布
      */
-    var backColorPositions: FloatArray? = null
+    var backColorPositions: FloatArray? = context.resources.getStringArray(R.array.position_gradient).map { it.toFloat() }.toFloatArray()
 
     init {
         // 获取定义属性
@@ -209,6 +213,7 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
         paintWidth = typedArray.getDimension(R.styleable.ArcProgressBar_paintWidth, paintWidth)
         paintColor = typedArray.getColor(R.styleable.ArcProgressBar_paintColor, paintColor)
         showCoordinate = typedArray.getBoolean(R.styleable.ArcProgressBar_showCoordinate, showCoordinate)
+        showColorGradient = typedArray.getBoolean(R.styleable.ArcProgressBar_showColorGradient, showColorGradient)
         showScaleValue = typedArray.getBoolean(R.styleable.ArcProgressBar_showScaleValue, showScaleValue)
         // 设置画笔
         paint.isAntiAlias = true
@@ -281,6 +286,10 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
         updateScaleBitmap()
         // 更新动态进度条bitmap
         updateProgressBarBitmap()
+        // 打开一层新的图层
+        val layer = canvas.saveLayer(rect, null, ALL_SAVE_FLAG)
+        // 清除图层
+        canvas.drawColor(TRANSPARENT, PorterDuff.Mode.CLEAR)
         // 绘制坐标
         if (showCoordinate) drawCoordinate(canvas)
         // 绘制静态刻度线
@@ -298,6 +307,10 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
         titleDesc?.apply { drawText(canvas, this) }
         subTitle?.apply { drawText(canvas, this) }
         subTitleDesc?.apply { drawText(canvas, this) }
+        // 绘制渐变色
+        if (showColorGradient) drawColorGradient(canvas)
+        // 应用图层
+        canvas.restoreToCount(layer)
     }
 
     /**
@@ -339,6 +352,8 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
         if (scaleCanvas == null) {
             scaleBitmap?.also { scaleCanvas = Canvas(it) }
         }
+        // 绘制前清空画布
+        scaleCanvas?.drawColor(TRANSPARENT, PorterDuff.Mode.CLEAR)
         scaleCanvas?.also { drawScale(it, rect.width() / 2, rect.height() / 2, paint, progressPercent) }
     }
 
@@ -362,6 +377,8 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
             bottom = rect.height() / 2 + rect.height() * progressBarPercent / 2
             right = rect.width() / 2 + rect.width() * progressBarPercent / 2
         }
+        // 绘制前清空画布
+        progressBarCanvas?.drawColor(TRANSPARENT, PorterDuff.Mode.CLEAR)
         progressBarCanvas?.also { drawProgressBar(it, rectF, paint, subProgressPercent) }
     }
 
@@ -464,11 +481,10 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
      * 绘制进度条
      */
     private fun drawProgressBar(canvas: Canvas?, rect: RectF, paint: Paint?, percent: Float = 1f) {
-        val angle = 270f * percent
         // 设置画笔为描边
         paint?.style = Paint.Style.STROKE
         canvas?.rotate(180f * 3 / 4, rect.centerX(), rect.centerY())
-        paint?.also { canvas?.drawArc(rect, 0f, angle, false, it) }
+        paint?.also { canvas?.drawArc(rect, 0f, 270f * percent, false, it) }
         canvas?.rotate(-180f * 3 / 4, rect.centerX(), rect.centerY())
     }
 
@@ -504,25 +520,35 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
         paint.color = paintColor
     }
 
+    private fun drawColorGradient(canvas: Canvas) {
+        // 判断绘制点
+        val size = min(measuredHeight, measuredWidth)
+        val top = ((measuredHeight - size) / 2).toFloat()
+        val left = ((measuredWidth - size) / 2).toFloat()
+        // 绘制背景图片
+        colorBitmap?.also { canvas.drawBitmap(it, left, top, paint) }
+    }
+
     fun progress(progress: Int, toMax: Boolean = false, during: Long = 500) {
-        var animator: ObjectAnimator? = null
-        if (toMax) {
-            animator = ObjectAnimator.ofInt(this, "progress", this.progress, progressMax, progress).setDuration(during * 2)
+        val animator = if (toMax) {
+            ObjectAnimator.ofInt(this, "progress", this.progress, progressMax, progress).setDuration(during * 2)
         } else {
-            ObjectAnimator.ofInt(this, "progress", this.progress, progress).setDuration(during).start()
+            ObjectAnimator.ofInt(this, "progress", this.progress, progress).setDuration(during)
         }
-        animator?.interpolator = FastOutSlowInInterpolator()
-        animator?.start()
+        animator.start()
     }
 
     fun subProgress(progress: Int, toMax: Boolean = false, during: Long = 500) {
-        var animator: ObjectAnimator? = null
-        if (toMax) {
-            animator = ObjectAnimator.ofInt(this, "subProgress", this.subProgress, subProgressMax, progress).setDuration(during * 2)
+        val animator = if (toMax) {
+            ObjectAnimator.ofInt(this, "subProgress", this.subProgress, subProgressMax, progress).setDuration(during * 2)
         } else {
-            ObjectAnimator.ofInt(this, "subProgress", this.subProgress, progress).setDuration(during).start()
+            ObjectAnimator.ofInt(this, "subProgress", this.subProgress, progress).setDuration(during)
         }
-        animator?.interpolator = FastOutSlowInInterpolator()
-        animator?.start()
+        animator.start()
+    }
+
+    fun getPath(path: Path, excludeRadius: Float = 0f): Path {
+        path.addCircle(rect.centerX() + marginLeft, rect.centerY() + marginTop, scaleOutsideSpecialRadius + excludeRadius, Path.Direction.CW)
+        return path
     }
 }

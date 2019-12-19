@@ -39,6 +39,7 @@
         <attr name="subTitleDescAngle" format="float" />
         <attr name="subTitleDescPercent" format="fraction" />
         <attr name="showCoordinate" format="boolean" />
+        <attr name="showColorGradient" format="boolean" />
         <attr name="showScaleValue" format="boolean" />
     </declare-styleable>
 </resources>
