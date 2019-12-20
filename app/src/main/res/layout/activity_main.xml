@@ -107,7 +107,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:itemCount="0"
+        tools:itemCount="5"
+        tools:layoutManager="com.qicode.bubbleview.BubbleLayoutManager"
         tools:listitem="@layout/item_bubble" />
 
 </com.qicode.beziermask.BezierMaskView>
