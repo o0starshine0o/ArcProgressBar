@@ -1,13 +1,13 @@
 package com.abelhu.stepdemo
 
 import android.animation.AnimatorInflater
+import android.support.v4.content.ContextCompat
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.RecyclerView
-import kotlin.random.Random
+import java.util.*
 
 class BubbleAdapter : RecyclerView.Adapter<BubbleAdapter.BubbleHolder>() {
     override fun getItemCount(): Int {
@@ -41,7 +41,7 @@ class BubbleAdapter : RecyclerView.Adapter<BubbleAdapter.BubbleHolder>() {
         private val textView = itemView.findViewById<TextView>(R.id.textView)
 
         fun initHolder(position: Int) {
-            textView.text = "${Random.nextInt(0, 999)}"
+            textView.text = "${Random().nextInt(999)}"
             textView.background = when (position % 2) {
                 0 -> ContextCompat.getDrawable(textView.context, R.drawable.bubble_primary)
                 else -> ContextCompat.getDrawable(textView.context, R.drawable.bubble_secondary)

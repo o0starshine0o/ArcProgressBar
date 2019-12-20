@@ -5,8 +5,8 @@ import android.graphics.Canvas
 import android.graphics.Color.WHITE
 import android.graphics.Paint
 import android.graphics.Path
+import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
-import androidx.constraintlayout.widget.ConstraintLayout
 
 class BezierMaskView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ConstraintLayout(context, attrs, defStyleAttr) {
 

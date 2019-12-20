@@ -6,15 +6,15 @@ import android.graphics.Path
 import android.graphics.Region
 import android.net.Uri
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.qicode.arcprogressbar.DrawString
 import com.qicode.bubbleview.BubbleLayoutManager
 import com.qicode.extension.dp
 import com.qicode.extension.sp
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlin.random.Random
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -121,7 +121,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initDecoration() {
         val uri = Uri.parse("https://img.zcool.cn/community/01908756ca6bc332f875520fac8ae4.gif")
-        Glide.with(this).asGif().load(uri).into(imageView)
+        Glide.with(this).load(uri).asGif().into(imageView)
         imageView.post {
             imageView.apply {
                 val region = Region(left - defaultBubbleSize.toInt(), top - defaultBubbleSize.toInt(), right + defaultBubbleSize.toInt(),
@@ -133,11 +133,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun randomProgress(view: View) {
         // 500ms到达指定位置
-        progressBar.progress(Random.nextInt(progressBar.progressMin, progressBar.progressMax), false, 500)
+        progressBar.progress(Random().nextInt(progressBar.progressMax - progressBar.progressMin + 1) + progressBar.progressMin, false, 500)
     }
 
     private fun randomSubProgress(view: View) {
         // 500ms到达指定位置
-        progressBar.subProgress(Random.nextInt(progressBar.subProgressMin, progressBar.subProgressMax), false, 500)
+        progressBar.subProgress(Random().nextInt(progressBar.subProgressMax - progressBar.subProgressMin + 1) + progressBar.subProgressMin, false, 500)
     }
 }

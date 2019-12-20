@@ -3,12 +3,12 @@ package com.qicode.bubbleview
 import android.graphics.Path
 import android.graphics.Rect
 import android.graphics.Region
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import java.util.*
 import kotlin.math.max
-import kotlin.random.Random
 
 class BubbleLayoutManager(private val maxRandomTimes: Int = 100) : RecyclerView.LayoutManager() {
     private var availableRegion: Region = Region()
@@ -54,8 +54,8 @@ class BubbleLayoutManager(private val maxRandomTimes: Int = 100) : RecyclerView.
         val viewHeight = getDecoratedMeasuredHeight(view)
         for (i in 0..maxRandomTimes) {
             // 获取随机坐标,作为view的锚点(中心)
-            val randomX = Random.nextInt(viewWidth / 2, width - viewWidth / 2)
-            val randomY = Random.nextInt(viewHeight / 2, height - viewHeight / 2)
+            val randomX = Random().nextInt(width - viewWidth + 1 ) + viewWidth / 2
+            val randomY = Random().nextInt(height - viewHeight + 1 ) + viewHeight / 2
             // 如果获取到可用的坐标, 返回可用区域
             if (availableRegion.contains(randomX, randomY)) {
                 Log.i("BubbleLayoutManager", "try $i times, find a available region to put child view")

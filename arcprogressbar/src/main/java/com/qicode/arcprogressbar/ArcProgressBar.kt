@@ -7,9 +7,7 @@ import android.graphics.Canvas.ALL_SAVE_FLAG
 import android.graphics.Color.*
 import android.util.AttributeSet
 import android.view.View
-import androidx.core.view.marginLeft
-import androidx.core.view.marginTop
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator
+import android.view.ViewGroup
 import kotlin.math.*
 
 
@@ -548,6 +546,8 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
     }
 
     fun getPath(path: Path, excludeRadius: Float = 0f): Path {
+        val marginLeft = (layoutParams as ViewGroup.MarginLayoutParams).leftMargin
+        val marginTop = (layoutParams as ViewGroup.MarginLayoutParams).topMargin
         path.addCircle(rect.centerX() + marginLeft, rect.centerY() + marginTop, scaleOutsideSpecialRadius + excludeRadius, Path.Direction.CW)
         return path
     }
