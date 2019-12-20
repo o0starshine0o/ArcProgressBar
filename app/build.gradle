@@ -19,6 +19,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug{
+            minifyEnabled false
+        }
     }
 }
 
@@ -31,16 +34,16 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     // 圆弧进度条，本地或者网络库
 //    implementation project(path: ':arcprogressbar')
-    implementation 'com.qicode:arcprogressbar:1.0.2'
+    implementation 'com.qicode:arcprogressbar:1.0.3'
     // 贝塞尔曲线遮罩，本地或者网络库
 //    implementation project(path: ':beziermask')
-    implementation 'com.qicode:beziermask:1.0.2'
+    implementation 'com.qicode:beziermask:1.0.3'
     // 气泡产生，本地或者网络库
 //    implementation project(path: ':bubbleview')
-    implementation 'com.qicode:bubbleview:1.0.2'
+    implementation 'com.qicode:bubbleview:1.0.3'
     // 工具类，本地或者网络库
 //    implementation project(path: ':utils')
-    implementation 'com.qicode:utils:1.0.2'
+    implementation 'com.qicode:utils:1.0.3'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
