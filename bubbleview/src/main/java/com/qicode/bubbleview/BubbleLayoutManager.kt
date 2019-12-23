@@ -41,10 +41,10 @@ class BubbleLayoutManager(private val maxRandomTimes: Int = 100) : RecyclerView.
 
     /**
      * 需要排除的区域
+     * 为了提高效率，在所有区域都排除完成之后需要调用requestLayout()
      */
     fun exclude(region: Region) {
         excludeRegions.add(region)
-        requestLayout()
     }
 
     private fun getAvailableRect(view: View): Rect? {
