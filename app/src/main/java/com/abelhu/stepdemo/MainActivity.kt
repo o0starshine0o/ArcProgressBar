@@ -31,9 +31,7 @@ class MainActivity : AppCompatActivity() {
         initProgress()
         initButton()
         initDecoration()
-
-        recyclerView.layoutManager = BubbleLayoutManager()
-        recyclerView.adapter = BubbleAdapter()
+        initBubble()
     }
 
     private fun initContainer() {
@@ -50,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         container.post {
             val region = Region(0, 0, container.measuredWidth, container.measuredHeight)
             region.setPath(container.getPath(Path(), defaultBubbleSize), region)
-            (recyclerView.layoutManager as? BubbleLayoutManager)?.exclude(region)
+            (bubbleView.layoutManager as? BubbleLayoutManager)?.exclude(region)
         }
     }
 
@@ -106,7 +104,7 @@ class MainActivity : AppCompatActivity() {
             progressBar.apply {
                 val region = Region(0, 0, container.measuredWidth, container.measuredHeight)
                 region.setPath(progressBar.getPath(Path(), defaultBubbleSize), region)
-                (recyclerView.layoutManager as? BubbleLayoutManager)?.exclude(region)
+                (bubbleView.layoutManager as? BubbleLayoutManager)?.exclude(region)
             }
         }
     }
@@ -116,7 +114,10 @@ class MainActivity : AppCompatActivity() {
         val animator = AnimatorInflater.loadAnimator(this, R.animator.scale_90_2s_repeat)
         animator.setTarget(button)
         animator.start()
-        button.setOnClickListener { recyclerView.requestLayout() }
+        button.setOnClickListener {
+            progressBar.progressMax = Random().nextInt(15000)
+            progressBar.postInvalidate()
+        }
     }
 
     private fun initDecoration() {
@@ -126,8 +127,16 @@ class MainActivity : AppCompatActivity() {
             imageView.apply {
                 val region = Region(left - defaultBubbleSize.toInt(), top - defaultBubbleSize.toInt(), right + defaultBubbleSize.toInt(),
                         bottom + defaultBubbleSize.toInt())
-                (recyclerView.layoutManager as? BubbleLayoutManager)?.exclude(region)
+                (bubbleView.layoutManager as? BubbleLayoutManager)?.exclude(region)
             }
+        }
+    }
+
+    private fun initBubble(){
+        bubbleView.layoutManager = BubbleLayoutManager()
+        bubbleView.adapter = BubbleAdapter()
+        bubbleView.post {
+            bubbleView.requestLayout()
         }
     }
 
