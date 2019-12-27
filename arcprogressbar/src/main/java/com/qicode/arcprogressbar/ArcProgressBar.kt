@@ -526,7 +526,7 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
         colorBitmap?.also { canvas.drawBitmap(it, left, top, paint) }
     }
 
-    fun progress(progress: Int, toMax: Boolean? = false, during: Long? = 500) {
+    @JvmOverloads fun progress(progress: Int, toMax: Boolean? = false, during: Long? = 500) {
         val animator = if (toMax == true) {
             ObjectAnimator.ofInt(this, "progress", this.progress, progressMax, progress).setDuration(during ?: 500 * 2)
         } else {
@@ -535,7 +535,7 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
         animator.start()
     }
 
-    fun subProgress(progress: Int, toMax: Boolean? = false, during: Long? = 500) {
+    @JvmOverloads fun subProgress(progress: Int, toMax: Boolean? = false, during: Long? = 500) {
         val animator = if (toMax == true) {
             ObjectAnimator.ofInt(this, "subProgress", this.subProgress, subProgressMax, progress).setDuration(during ?: 500 * 2)
         } else {
