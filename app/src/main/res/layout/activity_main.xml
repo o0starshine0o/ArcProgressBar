@@ -78,7 +78,9 @@
         app:titleDescPercent="6%"
         app:titleDescSize="50sp"
         app:titlePercent="30%"
-        app:titleSize="18sp" />
+        app:titleSize="18sp"
+        app:startAngle="0.83"
+        app:drawAngle="1.33"/>
 
     <Button
         android:id="@+id/button"

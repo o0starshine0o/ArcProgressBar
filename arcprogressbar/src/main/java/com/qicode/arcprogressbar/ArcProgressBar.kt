@@ -190,6 +190,15 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
      */
     var backColorPositions: FloatArray? = context.resources.getStringArray(R.array.position_gradient).map { it.toFloat() }.toFloatArray()
 
+    /**
+     * 起始角度（水平右方向为X正轴，垂直下方向为Y正轴）
+     */
+    var startAngle: Float = 7f / 8
+    /**
+     * 绘制角度角度（水平右方向为X正轴，垂直下方向为Y正轴）
+     */
+    var drawAngle: Float = 5f / 4
+
     init {
         // 获取定义属性
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.ArcProgressBar)
@@ -212,6 +221,8 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
         showCoordinate = typedArray.getBoolean(R.styleable.ArcProgressBar_showCoordinate, showCoordinate)
         showColorGradient = typedArray.getBoolean(R.styleable.ArcProgressBar_showColorGradient, showColorGradient)
         showScaleValue = typedArray.getBoolean(R.styleable.ArcProgressBar_showScaleValue, showScaleValue)
+        startAngle = typedArray.getFloat(R.styleable.ArcProgressBar_startAngle, startAngle)
+        drawAngle = typedArray.getFloat(R.styleable.ArcProgressBar_drawAngle, drawAngle)
         // 设置画笔
         paint.isAntiAlias = true
         paint.isDither = true
@@ -438,9 +449,9 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
         // 设置画笔为填充
         paint?.style = Paint.Style.FILL
         // 开始旋转的角度
-        val startDegree = PI * 3 / 4
+        val startDegree = PI * startAngle
         // 角度结束3π/2
-        val totalDegrees = PI * 3 / 2
+        val totalDegrees = PI * drawAngle
         // 确定刻度之间的角度
         val gapDegrees = totalDegrees / (scaleCount - 1)
         // 绘制
@@ -480,9 +491,9 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
     private fun drawProgressBar(canvas: Canvas?, rect: RectF, paint: Paint?, percent: Float = 1f) {
         // 设置画笔为描边
         paint?.style = Paint.Style.STROKE
-        canvas?.rotate(180f * 3 / 4, rect.centerX(), rect.centerY())
-        paint?.also { canvas?.drawArc(rect, 0f, 270f * percent, false, it) }
-        canvas?.rotate(-180f * 3 / 4, rect.centerX(), rect.centerY())
+        canvas?.rotate(180f * startAngle, rect.centerX(), rect.centerY())
+        paint?.also { canvas?.drawArc(rect, 0f, 180f * drawAngle * percent, false, it) }
+        canvas?.rotate(-180f * startAngle, rect.centerX(), rect.centerY())
     }
 
     /**
@@ -526,7 +537,8 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
         colorBitmap?.also { canvas.drawBitmap(it, left, top, paint) }
     }
 
-    @JvmOverloads fun progress(progress: Int, toMax: Boolean? = false, during: Long? = 500) {
+    @JvmOverloads
+    fun progress(progress: Int, toMax: Boolean? = false, during: Long? = 500) {
         val animator = if (toMax == true) {
             ObjectAnimator.ofInt(this, "progress", this.progress, progressMax, progress).setDuration(during ?: 500 * 2)
         } else {
@@ -535,7 +547,8 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
         animator.start()
     }
 
-    @JvmOverloads fun subProgress(progress: Int, toMax: Boolean? = false, during: Long? = 500) {
+    @JvmOverloads
+    fun subProgress(progress: Int, toMax: Boolean? = false, during: Long? = 500) {
         val animator = if (toMax == true) {
             ObjectAnimator.ofInt(this, "subProgress", this.subProgress, subProgressMax, progress).setDuration(during ?: 500 * 2)
         } else {
