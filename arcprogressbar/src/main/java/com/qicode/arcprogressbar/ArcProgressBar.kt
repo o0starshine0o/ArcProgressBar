@@ -509,9 +509,9 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
      * 绘制刻度的文本
      */
     private fun drawScaleValue(canvas: Canvas) {
-        drawText(canvas, DrawString(progressMin.toString(), scaleValueColor, 315.0f, scaleValuePercent, scaleValueSize))
+        drawText(canvas, DrawString(progressMin.toString(), scaleValueColor, 180f * (startAngle + drawAngle) - 90, scaleValuePercent, scaleValueSize))
         drawText(canvas, DrawString(((progressMin + progressMax) / 2).toString(), scaleValueColor, 180f, scaleValuePercent, scaleValueSize))
-        drawText(canvas, DrawString(progressMax.toString(), scaleValueColor, 45f, scaleValuePercent, scaleValueSize))
+        drawText(canvas, DrawString(progressMax.toString(), scaleValueColor, 180f * startAngle - 90, scaleValuePercent, scaleValueSize))
     }
 
     /**
