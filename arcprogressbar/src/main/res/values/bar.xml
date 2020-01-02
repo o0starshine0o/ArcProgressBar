@@ -43,5 +43,6 @@
         <attr name="showScaleValue" format="boolean" />
         <attr name="startAngle" format="float" />
         <attr name="drawAngle" format="float" />
+        <attr name="uniteProgress" format="boolean" />
     </declare-styleable>
 </resources>

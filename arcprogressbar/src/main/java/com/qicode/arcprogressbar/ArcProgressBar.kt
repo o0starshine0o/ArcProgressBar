@@ -199,6 +199,11 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
      */
     var drawAngle: Float = 5f / 4
 
+    /**
+     * 2个进度条是否统一进度
+     */
+    var uniteProgress = false
+
     init {
         // 获取定义属性
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.ArcProgressBar)
@@ -223,6 +228,7 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
         showScaleValue = typedArray.getBoolean(R.styleable.ArcProgressBar_showScaleValue, showScaleValue)
         startAngle = typedArray.getFloat(R.styleable.ArcProgressBar_startAngle, startAngle)
         drawAngle = typedArray.getFloat(R.styleable.ArcProgressBar_drawAngle, drawAngle)
+        uniteProgress = typedArray.getBoolean(R.styleable.ArcProgressBar_uniteProgress, uniteProgress)
         // 设置画笔
         paint.isAntiAlias = true
         paint.isDither = true
@@ -387,7 +393,7 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
         }
         // 绘制前清空画布
         progressBarCanvas?.drawColor(TRANSPARENT, PorterDuff.Mode.CLEAR)
-        progressBarCanvas?.also { drawProgressBar(it, rectF, paint, subProgressPercent) }
+        progressBarCanvas?.also { drawProgressBar(it, rectF, paint, if (uniteProgress) progressPercent else subProgressPercent) }
     }
 
     /**

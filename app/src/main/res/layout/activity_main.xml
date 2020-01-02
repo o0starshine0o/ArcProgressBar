@@ -80,7 +80,8 @@
         app:titlePercent="30%"
         app:titleSize="18sp"
         app:startAngle="0.83"
-        app:drawAngle="1.33"/>
+        app:drawAngle="1.33"
+        app:uniteProgress="false"/>
 
     <Button
         android:id="@+id/button"
