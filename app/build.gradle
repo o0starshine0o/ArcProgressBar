@@ -36,7 +36,7 @@ dependencies {
 //    implementation 'com.qicode:arcprogressbar:1.2.0'
     // 贝塞尔曲线遮罩，本地或者网络库
     implementation project(path: ':beziermask')
-//    implementation 'com.qicode:beziermask:1.2.0'
+//    implementation 'com.qicode:beziermask:1.2.1'
     // 气泡产生，本地或者网络库
     implementation project(path: ':bubbleview')
 //    implementation 'com.qicode:bubbleview:1.2.0'

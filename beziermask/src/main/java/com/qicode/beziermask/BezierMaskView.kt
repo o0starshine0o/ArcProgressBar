@@ -112,7 +112,7 @@ class BezierMaskView @JvmOverloads constructor(context: Context, attrs: Attribut
         return path
     }
 
-    private fun updateBubble() {
+    public fun updateBubble() {
         // 优先获取manager
         var manager: BubbleLayoutManager? = null
         for (index in 0 until childCount) {

@@ -101,10 +101,7 @@ class MainActivity : AppCompatActivity() {
             progressBar.progressMax = Random().nextInt(15000)
             progressBar.postInvalidate()
             // 更新气泡位置
-            val clazz = container::class.java
-            val method = clazz.getDeclaredMethod("onLayout", Boolean::class.java, Int::class.java, Int::class.java, Int::class.java, Int::class.java)
-            method.isAccessible = true
-            method.invoke(container, true, container.left, container.top, container.right, container.bottom)
+            container.updateBubble()
         }
     }
 
