@@ -6,15 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@mipmap/bg_sky"
-    app:groundHeight="40dp"
+    app:excludeRadius="20dp"
+    app:groundHeight="56dp"
     app:groundSize="26dp"
     app:smooth="0.2"
     tools:context=".MainActivity">
-
-    <View
-        android:id="@+id/holder"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"/>
 
     <Button
         android:id="@+id/randomProgress"
@@ -39,10 +35,11 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="20dp"
+        app:drawAngle="1.33"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/holder"
+        app:layout_constraintTop_toTopOf="parent"
         app:paintColor="@android:color/white"
         app:paintWidth="4dp"
         app:progress="14000"
@@ -60,6 +57,7 @@
         app:showCoordinate="false"
         app:showScaleValue="true"
         app:specialScales="9,29,49"
+        app:startAngle="0.83"
         app:subProgress="10000"
         app:subProgressMax="15000"
         app:subProgressMin="1"
@@ -79,15 +77,13 @@
         app:titleDescSize="50sp"
         app:titlePercent="30%"
         app:titleSize="18sp"
-        app:startAngle="0.83"
-        app:drawAngle="1.33"
-        app:uniteProgress="false"/>
+        app:uniteProgress="false" />
 
     <Button
         android:id="@+id/button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="30dp"
+        android:layout_margin="46dp"
         android:background="@mipmap/round_rect_gradient_yellow_shadow"
         android:paddingTop="12dp"
         android:paddingBottom="22dp"

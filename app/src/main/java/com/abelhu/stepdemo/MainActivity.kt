@@ -2,8 +2,6 @@ package com.abelhu.stepdemo
 
 import android.animation.AnimatorInflater
 import android.graphics.Color
-import android.graphics.Path
-import android.graphics.Region
 import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -18,11 +16,6 @@ import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
-    companion object {
-        // 暂定圆圈半径为20
-        private val defaultBubbleSize = 20.dp
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -39,16 +32,13 @@ class MainActivity : AppCompatActivity() {
             // 地面颜色
             groundColor = Color.WHITE
             // 基地高度
-            groundHeight = 40.dp
+            groundHeight = 56.dp
             // 地面高度
             groundSize = 26.dp
             // 圆滑程度
             smooth = 0.2f
-        }
-        container.post {
-            val region = Region(0, 0, container.measuredWidth, container.measuredHeight)
-            region.setPath(container.getPath(Path(), defaultBubbleSize), region)
-            (bubbleView.layoutManager as? BubbleLayoutManager)?.exclude(region)
+            // 需要排除的气泡半径
+            excludeRadius = 20.dp
         }
     }
 
@@ -100,13 +90,6 @@ class MainActivity : AppCompatActivity() {
             // 背景渐变色分布(默认平均分布)
             backColorPositions = context.resources.getStringArray(com.qicode.arcprogressbar.R.array.position_gradient).map { it.toFloat() }.toFloatArray()
         }
-        progressBar.post {
-            progressBar.apply {
-                val region = Region(0, 0, container.measuredWidth, container.measuredHeight)
-                region.setPath(progressBar.getPath(Path(), defaultBubbleSize), region)
-                (bubbleView.layoutManager as? BubbleLayoutManager)?.exclude(region)
-            }
-        }
     }
 
     private fun initButton() {
@@ -117,27 +100,22 @@ class MainActivity : AppCompatActivity() {
         button.setOnClickListener {
             progressBar.progressMax = Random().nextInt(15000)
             progressBar.postInvalidate()
+            // 更新气泡位置
+            val clazz = container::class.java
+            val method = clazz.getDeclaredMethod("onLayout", Boolean::class.java, Int::class.java, Int::class.java, Int::class.java, Int::class.java)
+            method.isAccessible = true
+            method.invoke(container, true, container.left, container.top, container.right, container.bottom)
         }
     }
 
     private fun initDecoration() {
         val uri = Uri.parse("https://img.zcool.cn/community/01908756ca6bc332f875520fac8ae4.gif")
         Glide.with(this).load(uri).asGif().into(imageView)
-        imageView.post {
-            imageView.apply {
-                val region = Region(left - defaultBubbleSize.toInt(), top - defaultBubbleSize.toInt(), right + defaultBubbleSize.toInt(),
-                        bottom + defaultBubbleSize.toInt())
-                (bubbleView.layoutManager as? BubbleLayoutManager)?.exclude(region)
-            }
-        }
     }
 
-    private fun initBubble(){
-        bubbleView.layoutManager = BubbleLayoutManager()
+    private fun initBubble() {
+        bubbleView.layoutManager = BubbleLayoutManager(50)
         bubbleView.adapter = BubbleAdapter()
-        bubbleView.post {
-            bubbleView.requestLayout()
-        }
     }
 
     private fun randomProgress(view: View) {

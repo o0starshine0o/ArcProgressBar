@@ -2,6 +2,7 @@
 <resources>
     <declare-styleable name="BezierMaskView">
         <attr name="smooth" format="float" />
+        <attr name="excludeRadius" format="dimension" />
         <attr name="groundSize" format="dimension" />
         <attr name="groundHeight" format="dimension" />
         <attr name="groundColor" format="color" />
