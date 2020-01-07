@@ -89,5 +89,17 @@ bintray {
         vcsUrl = PROJ_VCSURL
         licenses = ["Apache-2.0"]
         publicDownloadNumbers = true
+        version{
+            gpg{
+                sign = true
+                passphrase = properties.getProperty("bintray.gpg.password")
+            }
+            mavenCentralSync {
+                sync = true
+                user = properties.getProperty("bintray.oss.user")
+                password = properties.getProperty("bintray.oss.password")
+                close = '1'
+            }
+        }
     }
 }
