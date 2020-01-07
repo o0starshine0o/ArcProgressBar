@@ -158,5 +158,5 @@ For more, read the demo.
 # Donate
 If this Weight helps you , I'll happy if you notify me by donate:
 
-![https://github.com/o0starshine0o/ArcProgressBar](screenCaptures/AliReceive.jpeg)
-![https://github.com/o0starshine0o/ArcProgressBar](screenCaptures/WechatReceive.jpeg)
+![https://github.com/o0starshine0o/ArcProgressBar](screenCaptures/AliReceive.jpg)
+![https://github.com/o0starshine0o/ArcProgressBar](screenCaptures/WechatReceive.jpg)
