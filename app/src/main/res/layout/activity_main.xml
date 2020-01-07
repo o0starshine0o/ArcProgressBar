@@ -1,118 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.qicode.beziermask.BezierMaskView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@mipmap/bg_sky"
-    app:excludeRadius="20dp"
-    app:groundHeight="56dp"
-    app:groundSize="26dp"
-    app:smooth="0.2"
-    tools:context=".MainActivity">
+    android:layout_height="wrap_content">
+
+    <com.qicode.beziermask.BezierMaskView
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/bg_sky"
+        app:excludeRadius="20dp"
+        app:groundHeight="56dp"
+        app:groundSize="26dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:smooth="0.2">
+
+        <com.qicode.arcprogressbar.ArcProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="20dp"
+            app:drawAngle="1.33"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:paintColor="@android:color/white"
+            app:paintWidth="4dp"
+            app:progress="14000"
+            app:progressBarPercent="65%"
+            app:progressMax="15000"
+            app:progressMin="1"
+            app:scaleCount="59"
+            app:scaleInsidePercent="70%"
+            app:scaleOutsidePercent="78%"
+            app:scaleOutsideSpecialPercent="81%"
+            app:scaleValueColor="@android:color/white"
+            app:scaleValuePercent="52%"
+            app:scaleValueSize="16sp"
+            app:showColorGradient="false"
+            app:showCoordinate="false"
+            app:showScaleValue="true"
+            app:specialScales="9,29,49"
+            app:startAngle="0.83"
+            app:subProgress="10000"
+            app:subProgressMax="15000"
+            app:subProgressMin="1"
+            app:subTitle="@string/sub_title"
+            app:subTitleAngle="0"
+            app:subTitleDesc="@string/sub_title_desc"
+            app:subTitleDescAngle="0"
+            app:subTitleDescPercent="30%"
+            app:subTitleDescSize="30sp"
+            app:subTitlePercent="12%"
+            app:subTitleSize="18sp"
+            app:title="@string/title"
+            app:titleAngle="180"
+            app:titleColor="@android:color/black"
+            app:titleDesc="8888"
+            app:titleDescAngle="180"
+            app:titleDescPercent="6%"
+            app:titleDescSize="50sp"
+            app:titlePercent="30%"
+            app:titleSize="18sp"
+            app:uniteProgress="false" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="46dp"
+            android:background="@mipmap/round_rect_gradient_yellow_shadow"
+            android:paddingTop="12dp"
+            android:paddingBottom="22dp"
+            android:text="@string/button"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintWidth_percent="0.4" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/bubbleView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:itemCount="5"
+            tools:layoutManager="com.qicode.bubbleview.BubbleLayoutManager"
+            tools:listitem="@layout/item_bubble" />
+
+    </com.qicode.beziermask.BezierMaskView>
 
     <Button
         android:id="@+id/randomProgress"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:padding="8dp"
         android:text="@string/random_progress"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/container" />
 
     <Button
         android:id="@+id/randomSubProgress"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:padding="8dp"
         android:text="@string/random_progress_full"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.qicode.arcprogressbar.ArcProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_margin="20dp"
-        app:drawAngle="1.33"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:paintColor="@android:color/white"
-        app:paintWidth="4dp"
-        app:progress="14000"
-        app:progressBarPercent="65%"
-        app:progressMax="15000"
-        app:progressMin="1"
-        app:scaleCount="59"
-        app:scaleInsidePercent="70%"
-        app:scaleOutsidePercent="78%"
-        app:scaleOutsideSpecialPercent="81%"
-        app:scaleValueColor="@android:color/white"
-        app:scaleValuePercent="52%"
-        app:scaleValueSize="16sp"
-        app:showColorGradient="false"
-        app:showCoordinate="false"
-        app:showScaleValue="true"
-        app:specialScales="9,29,49"
-        app:startAngle="0.83"
-        app:subProgress="10000"
-        app:subProgressMax="15000"
-        app:subProgressMin="1"
-        app:subTitle="@string/sub_title"
-        app:subTitleAngle="0"
-        app:subTitleDesc="@string/sub_title_desc"
-        app:subTitleDescAngle="0"
-        app:subTitleDescPercent="30%"
-        app:subTitleDescSize="30sp"
-        app:subTitlePercent="12%"
-        app:subTitleSize="18sp"
-        app:title="@string/title"
-        app:titleAngle="180"
-        app:titleDesc="8888"
-        app:titleDescAngle="180"
-        app:titleDescPercent="6%"
-        app:titleDescSize="50sp"
-        app:titlePercent="30%"
-        app:titleSize="18sp"
-        app:uniteProgress="false" />
+        app:layout_constraintStart_toEndOf="@+id/randomProgress"
+        app:layout_constraintTop_toBottomOf="@id/container" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/addBubble"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="46dp"
-        android:background="@mipmap/round_rect_gradient_yellow_shadow"
-        android:paddingTop="12dp"
-        android:paddingBottom="22dp"
-        android:text="@string/button"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="8dp"
+        android:padding="8dp"
+        android:text="@string/add_bubble"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintWidth_percent="0.4" />
+        app:layout_constraintTop_toBottomOf="@id/randomProgress" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="ContentDescription" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/bubbleView"
+    <Button
+        android:id="@+id/reduceBubble"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:itemCount="5"
-        tools:layoutManager="com.qicode.bubbleview.BubbleLayoutManager"
-        tools:listitem="@layout/item_bubble" />
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:padding="8dp"
+        android:text="@string/reduce_bubble"
+        app:layout_constraintStart_toEndOf="@id/addBubble"
+        app:layout_constraintTop_toBottomOf="@id/randomProgress" />
 
-</com.qicode.beziermask.BezierMaskView>
+    <Button
+        android:id="@+id/layoutBubble"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:padding="8dp"
+        android:text="@string/layout_bubble"
+        app:layout_constraintStart_toEndOf="@id/reduceBubble"
+        app:layout_constraintTop_toBottomOf="@id/randomProgress" />
+
+</android.support.constraint.ConstraintLayout>

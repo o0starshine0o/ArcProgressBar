@@ -10,8 +10,10 @@ import android.widget.TextView
 import java.util.*
 
 class BubbleAdapter : RecyclerView.Adapter<BubbleAdapter.BubbleHolder>() {
+    private var count = 20
+
     override fun getItemCount(): Int {
-        return 20
+        return count
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -35,6 +37,16 @@ class BubbleAdapter : RecyclerView.Adapter<BubbleAdapter.BubbleHolder>() {
 
     override fun onBindViewHolder(holder: BubbleHolder, position: Int) {
         holder.initHolder(position)
+    }
+
+    fun addBubble(){
+        count++
+        notifyDataSetChanged()
+    }
+
+    fun reduceBubble(){
+        if(count > 0) count--
+        notifyDataSetChanged()
     }
 
     class BubbleHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

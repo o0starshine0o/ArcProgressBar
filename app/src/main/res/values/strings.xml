@@ -6,5 +6,8 @@
     <string name="sub_title_desc">8381</string>
     <string name="random_progress">Progress</string>
     <string name="random_progress_full">SubProgress</string>
+    <string name="add_bubble">AddBubble</string>
+    <string name="reduce_bubble">ReduceBubble</string>
+    <string name="layout_bubble">LayoutBubble</string>
     <string name="button">Button</string>
 </resources>

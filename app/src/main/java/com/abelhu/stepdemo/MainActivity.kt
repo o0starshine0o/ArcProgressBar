@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         initButton()
         initDecoration()
         initBubble()
+        initFunc()
     }
 
     private fun initContainer() {
@@ -43,14 +44,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initProgress() {
-        randomProgress.setOnClickListener(this::randomProgress)
-        randomSubProgress.setOnClickListener(this::randomSubProgress)
         progressBar.apply {
             // 中间各类文本
             title = DrawString("今日步数", Color.BLACK, 180f, 0.30f, 20.sp)
             titleDesc = DrawString("6666", Color.BLACK, 180f, 0.06f, 50.sp)
             subTitle = DrawString("运动步数", Color.BLACK, 0f, 0.12f, 20.sp)
             subTitleDesc = DrawString("6363", Color.BLACK, 0f, 0.30f, 30.sp)
+            // 角度
+            startAngle = 0.83f
+            drawAngle = 1.33f
             // 刻度线数量
             scaleCount = 59
             // 进度
@@ -113,6 +115,14 @@ class MainActivity : AppCompatActivity() {
     private fun initBubble() {
         bubbleView.layoutManager = BubbleLayoutManager(50)
         bubbleView.adapter = BubbleAdapter()
+    }
+
+    private fun initFunc(){
+        randomProgress.setOnClickListener(this::randomProgress)
+        randomSubProgress.setOnClickListener(this::randomSubProgress)
+        addBubble.setOnClickListener { (bubbleView.adapter as BubbleAdapter).addBubble() }
+        reduceBubble.setOnClickListener { (bubbleView.adapter as BubbleAdapter).reduceBubble() }
+        layoutBubble.setOnClickListener { container.updateBubble() }
     }
 
     private fun randomProgress(view: View) {
