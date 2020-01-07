@@ -16,14 +16,14 @@ what we can do...
 # Install
 
 ```xml
-    // 步数表盘
-    implementation 'com.qicode:arcprogressbar:1.2.0'
+    // 圆弧进度条
+    implementation 'com.github.qicodes:arcprogressbar:1.2.7'
     // 贝塞尔曲线遮罩
-    implementation 'com.qicode:beziermask:1.2.1'
-    // 步数气泡显示
-    implementation 'com.qicode:bubbleview:1.2.0'
-    // 步数工具
-    implementation 'com.qicode:utils:1.2.0'
+    implementation 'com.github.qicodes:beziermask:1.2.7'
+    // 气泡产生
+    implementation 'com.github.qicodes:bubbleview:1.2.7'
+    // 工具类
+    implementation 'com.github.qicodes:utils:1.2.7'
 ```
 
 # Functions
