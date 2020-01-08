@@ -3,7 +3,7 @@ dist: trusty
 
 env:
   matrix:
-    - BUILD_TOOLS=26.0.1 ANDROID_API=24 ANDROID_ABI=armeabi-v7a ADB_INSTALL_TIMEOUT=3
+    - BUILD_TOOLS=26.0.1 ANDROID_API=24 ANDROID_ABI=armeabi-v7a
 
 android:
   components:
@@ -28,8 +28,6 @@ android:
     # Specify at least one system image,
     # if you need to run emulator(s) during your tests
     - sys-img-$ANDROID_ABI-android-$ANDROID_API
-    
-install: travis_wait $ADB_INSTALL_TIMEOUT mvn install
     
 # Emulator Management: Create, Start and Wait
 before_script:
