@@ -3,7 +3,7 @@ dist: trusty
 
 env:
   matrix:
-    - BUILD-TOOLS=29.0.2 ANDROID-API=29 AVD-LEVEL=25 ANDROID-ABI=armeabi-v7a
+    - BUILD-TOOLS=26.0.1 ANDROID-API=26 AVD-LEVEL=24 ANDROID-ABI=armeabi-v7a
 
 android:
   components:
@@ -27,11 +27,11 @@ android:
 
     # Specify at least one system image,
     # if you need to run emulator(s) during your tests
-    - sys-img-$ANDROID-ABI-google_apis-$AVD-LEVEL
+    - sys-img-$ANDROID-ABI-android-$AVD-LEVEL
     
 # Emulator Management: Create, Start and Wait
 before_script:
-  - echo no | android create avd --force -n test -t android-$AVD-LEVEL --abi google_apis/$ANDROID-ABI -c 100M
+  - echo no | android create avd --force -n test -t android-$AVD-LEVEL --abi $ANDROID-ABI -c 100M
   - emulator -avd test -no-audio -no-window &
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
