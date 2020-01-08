@@ -1,5 +1,6 @@
 ![https://github.com/o0starshine0o/ArcProgressBar](screenCaptures/logo.jpg)
 
+![Travis (.org)](https://img.shields.io/travis/o0starshine0o/ArcProgressBar)
 ![Maven Central](https://img.shields.io/maven-central/v/com.github.qicodes/arcprogressbar)
 
 # ArcProgressBar
@@ -17,7 +18,7 @@ what we can do...
 ![https://github.com/o0starshine0o/ArcProgressBar](screenCaptures/progress.gif)
 ![https://github.com/o0starshine0o/ArcProgressBar](screenCaptures/bubble.gif)
 # Install
-Please using la version:![Maven Central](https://img.shields.io/maven-central/v/com.github.qicodes/arcprogressbar)
+Please using latest version:![Maven Central](https://img.shields.io/maven-central/v/com.github.qicodes/arcprogressbar)
 ```xml
 // 圆弧进度条
 implementation 'com.github.qicodes:arcprogressbar:1.2.7'
