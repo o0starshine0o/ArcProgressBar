@@ -69,8 +69,11 @@ install {
     }
 }
 
+def localProperties = project.rootProject.file('local.properties')
 Properties properties = new Properties()
-properties.load(project.rootProject.file('local.properties').newDataInputStream())
+if (localProperties.exists()){
+    properties.load(localProperties.newDataInputStream())
+}
 
 bintray {
     user = properties.getProperty("bintray.user")
