@@ -27,11 +27,6 @@ android:
     # if you need to run emulator(s) during your tests
     - sys-img-$ANDROID_ABI-android-$ANDROID_API
 
-    licenses:
-      - 'android-sdk-preview-license-52d11cd2'
-      - 'android-sdk-license-.+'
-      - 'google-gdk-license-.+'
-
 before_install:
   - yes | sdkmanager "platforms;android-27"
     
