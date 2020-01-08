@@ -2,6 +2,7 @@
 
 ![Travis (.com)](https://img.shields.io/travis/com/o0starshine0o/ArcProgressBar)
 ![Maven Central](https://img.shields.io/maven-central/v/com.github.qicodes/arcprogressbar)
+![GitHub](https://img.shields.io/github/license/o0starshine0o/ArcProgressBar)
 
 # ArcProgressBar
 
