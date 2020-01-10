@@ -1,7 +1,9 @@
 ![https://github.com/o0starshine0o/ArcProgressBar](screenCaptures/logo.jpg)
 
-![Travis (.org)](https://img.shields.io/travis/o0starshine0o/ArcProgressBar)
+![Travis (.com)](https://img.shields.io/travis/com/o0starshine0o/ArcProgressBar)
 ![Maven Central](https://img.shields.io/maven-central/v/com.github.qicodes/arcprogressbar)
+![GitHub](https://img.shields.io/github/license/o0starshine0o/ArcProgressBar)
+![GitHub last commit](https://img.shields.io/github/last-commit/o0starshine0o/ArcProgressBar)
 
 # ArcProgressBar
 
