@@ -19,7 +19,7 @@ class BubbleLayoutManager(private val maxRandomTimes: Int = 100) : RecyclerView.
     }
 
     override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State?) {
-        if (recycler == null || itemCount <= 0 || state?.isPreLayout == true) return
+        if (recycler == null || itemCount < 0 || state?.isPreLayout == true) return
         // 缓存所有view
         detachAndScrapAttachedViews(recycler)
         // 重置绘制区域
