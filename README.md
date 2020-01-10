@@ -20,7 +20,12 @@ what we can do...
 ![https://github.com/o0starshine0o/ArcProgressBar](screenCaptures/progress.gif)
 ![https://github.com/o0starshine0o/ArcProgressBar](screenCaptures/bubble.gif)
 # Install
-Please using latest version:![Maven Central](https://img.shields.io/maven-central/v/com.github.qicodes/arcprogressbar)
+Please using latest version:
+
+0. arcprogressbar:![Maven Central](https://img.shields.io/maven-central/v/com.github.qicodes/arcprogressbar)
+1. beziermask:![Maven Central](https://img.shields.io/maven-central/v/com.github.qicodes/beziermask)
+2. bubbleview:![Maven Central](https://img.shields.io/maven-central/v/com.github.qicodes/bubbleview)
+3. utils:![Maven Central](https://img.shields.io/maven-central/v/com.github.qicodes/utils)
 ```xml
 // 圆弧进度条
 implementation 'com.github.qicodes:arcprogressbar:1.2.7'
