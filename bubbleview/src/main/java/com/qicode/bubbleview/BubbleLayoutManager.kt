@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import java.util.*
 import kotlin.math.max
 
-class BubbleLayoutManager(private val maxRandomTimes: Int = 100) : RecyclerView.LayoutManager() {
+class BubbleLayoutManager(private val maxRandomTimes: Int = 100, private val proxy:IBubbleLayout? = null) : RecyclerView.LayoutManager() {
     private var availableRegion: Region = Region()
     private var excludeRegions: MutableList<Region> = MutableList(0) { Region() }
 
@@ -31,12 +31,13 @@ class BubbleLayoutManager(private val maxRandomTimes: Int = 100) : RecyclerView.
             // 获取本次的childView
             val childView = recycler.getViewForPosition(i)
             // 获取放置区域
-            getAvailableRect(childView)?.apply {
+            getAvailableRect(childView, i)?.apply {
                 addView(childView)
                 layoutDecoratedWithMargins(childView, left, top, right, bottom)
                 updateExcludeRegion(this, max(childView.measuredHeight, childView.measuredWidth))
             }
         }
+        super.onLayoutChildren(recycler, state)
     }
 
     /**
@@ -44,11 +45,7 @@ class BubbleLayoutManager(private val maxRandomTimes: Int = 100) : RecyclerView.
      * 为了提高效率，在所有区域都排除完成之后需要调用requestLayout()
      */
     fun exclude(view: View?, radius: Int = 0) {
-        view?.apply {
-            val region = Region(left -radius, top-radius, right+radius, bottom+radius
-            )
-            exclude(region)
-        }
+        view?.apply { exclude(Region(left -radius, top-radius, right+radius, bottom+radius)) }
     }
 
     /**
@@ -59,8 +56,11 @@ class BubbleLayoutManager(private val maxRandomTimes: Int = 100) : RecyclerView.
         excludeRegions.add(region)
     }
 
-    private fun getAvailableRect(view: View): Rect? {
+    private fun getAvailableRect(view: View, childIndex:Int): Rect? {
         measureChild(view, 0, 0)
+        // 先从接口获取，如果没有在计算寻找
+        val rect =  proxy?.getRect(childIndex)
+        if (rect != null) return rect
         // 获取view的宽高
         val viewWidth = getDecoratedMeasuredWidth(view)
         val viewHeight = getDecoratedMeasuredHeight(view)
@@ -71,11 +71,8 @@ class BubbleLayoutManager(private val maxRandomTimes: Int = 100) : RecyclerView.
             // 如果获取到可用的坐标, 返回可用区域
             if (availableRegion.contains(randomX, randomY)) {
                 Log.i("BubbleLayoutManager", "try $i times, find a available region to put child view")
-                return Rect().apply {
-                    left = randomX - viewWidth / 2
-                    top = randomY - viewHeight / 2
-                    right = randomX + viewWidth / 2
-                    bottom = randomY + viewHeight /2
+                return Rect(randomX - viewWidth / 2, randomY - viewHeight / 2, randomX + viewWidth / 2, randomY + viewHeight /2).apply {
+                    proxy?.setRect(childIndex, this)
                 }
             }
         }

@@ -113,8 +113,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initBubble() {
-        bubbleView.layoutManager = BubbleLayoutManager(50)
-        bubbleView.adapter = BubbleAdapter()
+        val adapter = BubbleAdapter()
+        bubbleView.layoutManager = BubbleLayoutManager(50, adapter)
+        bubbleView.adapter = adapter
     }
 
     private fun initFunc(){

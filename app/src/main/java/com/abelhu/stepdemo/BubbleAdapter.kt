@@ -1,26 +1,23 @@
 package com.abelhu.stepdemo
 
 import android.animation.AnimatorInflater
+import android.graphics.Rect
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import java.util.*
+import com.qicode.bubbleview.IBubbleLayout
 
-class BubbleAdapter : RecyclerView.Adapter<BubbleAdapter.BubbleHolder>() {
-    private var count = 20
+class BubbleAdapter : RecyclerView.Adapter<BubbleAdapter.BubbleHolder>(), IBubbleLayout {
+    private val list = MutableList(5) { i -> Bubble(i) }
 
-    override fun getItemCount(): Int {
-        return count
-    }
+    override fun getItemCount() = list.size
 
-    override fun getItemViewType(position: Int): Int {
-        return when (position) {
-            0 -> 0
-            else -> 1
-        }
+    override fun getItemViewType(position: Int) = when (position) {
+        0 -> 0
+        else -> 1
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BubbleHolder {
@@ -36,25 +33,31 @@ class BubbleAdapter : RecyclerView.Adapter<BubbleAdapter.BubbleHolder>() {
     }
 
     override fun onBindViewHolder(holder: BubbleHolder, position: Int) {
-        holder.initHolder(position)
+        holder.initHolder(list[position])
     }
 
-    fun addBubble(){
-        count++
+    override fun getRect(index: Int) = list[index].rect
+
+    override fun setRect(index: Int, rect: Rect) {
+        list[index].rect = rect
+    }
+
+    fun addBubble() {
+        list.add(Bubble(list.size))
         notifyDataSetChanged()
     }
 
-    fun reduceBubble(){
-        if(count > 0) count--
+    fun reduceBubble() {
+        if (list.size > 0) list.removeAt(0)
         notifyDataSetChanged()
     }
 
     class BubbleHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val textView = itemView.findViewById<TextView>(R.id.textView)
 
-        fun initHolder(position: Int) {
-            textView.text = "${Random().nextInt(999)}"
-            textView.background = when (position % 2) {
+        fun initHolder(bubble: Bubble) {
+            textView.text = "${bubble.index}"
+            textView.background = when (bubble.index % 2) {
                 0 -> ContextCompat.getDrawable(textView.context, R.drawable.bubble_primary)
                 else -> ContextCompat.getDrawable(textView.context, R.drawable.bubble_secondary)
             }
