@@ -10,13 +10,11 @@ import android.view.ViewGroup
 import java.util.*
 import kotlin.math.max
 
-class BubbleLayoutManager(private val maxRandomTimes: Int = 100, private val proxy:IBubbleLayout? = null) : RecyclerView.LayoutManager() {
-    private var availableRegion: Region = Region()
-    private var excludeRegions: MutableList<Region> = MutableList(0) { Region() }
+class BubbleLayoutManager(private val maxRandomTimes: Int = 100, private val proxy: IBubbleLayout? = null) : RecyclerView.LayoutManager() {
+    private var availableRegion = Region()
+    private var excludeRegions = MutableList(0) { Region() }
 
-    override fun generateDefaultLayoutParams(): RecyclerView.LayoutParams {
-        return RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-    }
+    override fun generateDefaultLayoutParams() = RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
     override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State?) {
         if (recycler == null || itemCount < 0 || state?.isPreLayout == true) return
@@ -27,6 +25,8 @@ class BubbleLayoutManager(private val maxRandomTimes: Int = 100, private val pro
         // 减去所有不可用区域
         excludeAllRegions()
         // 遍历所有的item
+        val start = System.currentTimeMillis()
+        var applyCount = 0
         for (i in 0 until itemCount) {
             // 获取本次的childView
             val childView = recycler.getViewForPosition(i)
@@ -35,8 +35,10 @@ class BubbleLayoutManager(private val maxRandomTimes: Int = 100, private val pro
                 addView(childView)
                 layoutDecoratedWithMargins(childView, left, top, right, bottom)
                 updateExcludeRegion(this, max(childView.measuredHeight, childView.measuredWidth))
+                applyCount++
             }
         }
+        Log.i("BubbleLayoutManager", "layout $applyCount/$itemCount children in ${System.currentTimeMillis() - start}ms")
         super.onLayoutChildren(recycler, state)
     }
 
@@ -45,7 +47,7 @@ class BubbleLayoutManager(private val maxRandomTimes: Int = 100, private val pro
      * 为了提高效率，在所有区域都排除完成之后需要调用requestLayout()
      */
     fun exclude(view: View?, radius: Int = 0) {
-        view?.apply { exclude(Region(left -radius, top-radius, right+radius, bottom+radius)) }
+        view?.apply { exclude(Region(left - radius, top - radius, right + radius, bottom + radius)) }
     }
 
     /**
@@ -56,22 +58,24 @@ class BubbleLayoutManager(private val maxRandomTimes: Int = 100, private val pro
         excludeRegions.add(region)
     }
 
-    private fun getAvailableRect(view: View, childIndex:Int): Rect? {
+    private fun getAvailableRect(view: View, childIndex: Int): Rect? {
         measureChild(view, 0, 0)
         // 先从接口获取，如果没有在计算寻找
-        val rect =  proxy?.getRect(childIndex)
-        if (rect != null) return rect
+        return proxy?.getRect(childIndex) ?: calculateAvailableRect(view, childIndex)
+    }
+
+    private fun calculateAvailableRect(view: View, childIndex: Int): Rect? {
         // 获取view的宽高
         val viewWidth = getDecoratedMeasuredWidth(view)
         val viewHeight = getDecoratedMeasuredHeight(view)
         for (i in 0..maxRandomTimes) {
             // 获取随机坐标,作为view的锚点(中心)
-            val randomX = Random().nextInt(width - viewWidth + 1 ) + viewWidth / 2
-            val randomY = Random().nextInt(height - viewHeight + 1 ) + viewHeight / 2
+            val randomX = Random().nextInt(width - viewWidth + 1) + viewWidth / 2
+            val randomY = Random().nextInt(height - viewHeight + 1) + viewHeight / 2
             // 如果获取到可用的坐标, 返回可用区域
             if (availableRegion.contains(randomX, randomY)) {
-                Log.i("BubbleLayoutManager", "try $i times, find a available region to put child view")
-                return Rect(randomX - viewWidth / 2, randomY - viewHeight / 2, randomX + viewWidth / 2, randomY + viewHeight /2).apply {
+                Log.i("BubbleLayoutManager", "try $i times, find a available region[$randomX, $randomY] to put child view")
+                return Rect(randomX - viewWidth / 2, randomY - viewHeight / 2, randomX + viewWidth / 2, randomY + viewHeight / 2).apply {
                     proxy?.setRect(childIndex, this)
                 }
             }
@@ -84,9 +88,7 @@ class BubbleLayoutManager(private val maxRandomTimes: Int = 100, private val pro
      * 排除所有 {@code excludeRegions} 设置的区域
      */
     private fun excludeAllRegions() {
-        for (region in excludeRegions) {
-            availableRegion.op(region, Region.Op.DIFFERENCE)
-        }
+        excludeRegions.forEach { region -> availableRegion.op(region, Region.Op.DIFFERENCE) }
     }
 
     /**
