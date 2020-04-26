@@ -118,7 +118,7 @@ class MainActivity : AppCompatActivity() {
         bubbleView.adapter = adapter
     }
 
-    private fun initFunc(){
+    private fun initFunc() {
         randomProgress.setOnClickListener(this::randomProgress)
         randomSubProgress.setOnClickListener(this::randomSubProgress)
         addBubble.setOnClickListener { (bubbleView.adapter as BubbleAdapter).addBubble() }

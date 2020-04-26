@@ -11,7 +11,8 @@ import java.util.*
 import kotlin.math.max
 
 class BubbleLayoutManager(private val maxRandomTimes: Int = 100, private val proxy: IBubbleLayout? = null) : RecyclerView.LayoutManager() {
-    private var availableRegion = Region()
+    var availableRegion = Region()
+        private set
     private var excludeRegions = MutableList(0) { Region() }
 
     override fun generateDefaultLayoutParams() = RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
