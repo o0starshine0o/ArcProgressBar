@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@mipmap/bg_sky"
-        app:excludeRadius="20dp"
         app:groundHeight="56dp"
         app:groundSize="26dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -19,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:smooth="0.2">
 
-        <com.qicode.arcprogressbar.ArcProgressBar
+        <com.abelhu.stepdemo.MyProgressBar
             android:id="@+id/progressBar"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -90,13 +89,15 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="ContentDescription" />
 
         <com.qicode.bubbleview.BubbleView
             android:id="@+id/bubbleView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:drawRegion="true"
+            app:excludeRadius="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

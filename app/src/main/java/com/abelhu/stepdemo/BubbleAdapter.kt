@@ -8,9 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.qicode.bubbleview.IBubbleLayout
+import com.qicode.bubbleview.BubbleLayoutProxy
 
-class BubbleAdapter : RecyclerView.Adapter<BubbleAdapter.BubbleHolder>(), IBubbleLayout {
+class BubbleAdapter : RecyclerView.Adapter<BubbleAdapter.BubbleHolder>(), BubbleLayoutProxy {
     private val list = MutableList(5) { i -> Bubble(i) }
 
     override fun getItemCount() = list.size
@@ -41,6 +41,8 @@ class BubbleAdapter : RecyclerView.Adapter<BubbleAdapter.BubbleHolder>(), IBubbl
     override fun setRect(index: Int, rect: Rect) {
         list[index].rect = rect
     }
+
+    override fun clear() = list.forEach { bubble -> bubble.rect = null }
 
     fun addBubble() {
         list.add(Bubble(list.size))

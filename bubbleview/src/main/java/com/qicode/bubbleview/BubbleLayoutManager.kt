@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import java.util.*
 import kotlin.math.max
 
-class BubbleLayoutManager(private val maxRandomTimes: Int = 100, private val proxy: IBubbleLayout? = null) : RecyclerView.LayoutManager() {
+class BubbleLayoutManager(private val maxRandomTimes: Int = 100, private val proxy: BubbleLayoutProxy? = null) : RecyclerView.LayoutManager() {
     var availableRegion = Region()
         private set
     private var excludeRegions = MutableList(0) { Region() }
@@ -47,16 +47,20 @@ class BubbleLayoutManager(private val maxRandomTimes: Int = 100, private val pro
      * 需要排除的区域
      * 为了提高效率，在所有区域都排除完成之后需要调用requestLayout()
      */
-    fun exclude(view: View?, radius: Int = 0) {
-        view?.apply { exclude(Region(left - radius, top - radius, right + radius, bottom + radius)) }
-    }
+    fun exclude(view: View?, radius: Int = 0) = view?.apply { exclude(Region(left - radius, top - radius, right + radius, bottom + radius)) }
 
     /**
      * 需要排除的区域
      * 为了提高效率，在所有区域都排除完成之后需要调用requestLayout()
      */
-    fun exclude(region: Region) {
-        excludeRegions.add(region)
+    fun exclude(region: Region) = excludeRegions.add(region)
+
+    /**
+     * 清除所有的气泡位置信息
+     */
+    fun clearBubble() {
+        proxy?.clear()
+        excludeRegions.clear()
     }
 
     private fun getAvailableRect(view: View, childIndex: Int): Rect? {
@@ -88,9 +92,7 @@ class BubbleLayoutManager(private val maxRandomTimes: Int = 100, private val pro
     /**
      * 排除所有 {@code excludeRegions} 设置的区域
      */
-    private fun excludeAllRegions() {
-        excludeRegions.forEach { region -> availableRegion.op(region, Region.Op.DIFFERENCE) }
-    }
+    private fun excludeAllRegions() = excludeRegions.forEach { region -> availableRegion.op(region, Region.Op.DIFFERENCE) }
 
     /**
      * 用于在layoutChildren时每当添加一个child，就需要把这个child的区域设置为不可使用

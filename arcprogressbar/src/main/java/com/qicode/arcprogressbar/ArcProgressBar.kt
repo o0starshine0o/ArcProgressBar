@@ -10,7 +10,7 @@ import android.view.View
 import kotlin.math.*
 
 
-class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : View(context, attrs, defStyleAttr) {
+open class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : View(context, attrs, defStyleAttr) {
     /**
      * 线条数
      */
@@ -98,7 +98,7 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
     /**
      * 刻度线外侧特殊半径
      */
-    private var scaleOutsideSpecialRadius = 0.0f
+    protected var scaleOutsideSpecialRadius = 0.0f
     /**
      * 进度条半径百分比
      */
@@ -561,13 +561,5 @@ class ArcProgressBar @JvmOverloads constructor(context: Context, attrs: Attribut
             ObjectAnimator.ofInt(this, "subProgress", this.subProgress, progress).setDuration(during ?: 500)
         }
         animator.start()
-    }
-
-    /**
-     * 需要获取的是在父控件中裁剪的区域，所以这个path更改为在父控件中的坐标
-     */
-    fun getPath(path: Path, excludeRadius: Float = 0f): Path {
-        path.addCircle((left + right).toFloat() / 2, (top + bottom).toFloat() / 2, scaleOutsideSpecialRadius + excludeRadius, Path.Direction.CW)
-        return path
     }
 }

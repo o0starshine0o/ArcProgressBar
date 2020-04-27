@@ -3,5 +3,6 @@
     <declare-styleable name="BubbleView">
         <attr name="regionColor" format="color" />
         <attr name="drawRegion" format="boolean" />
+        <attr name="excludeRadius" format="dimension" />
     </declare-styleable>
 </resources>

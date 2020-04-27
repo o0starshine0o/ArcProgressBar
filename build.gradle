@@ -3,6 +3,21 @@
 buildscript {
     ext.kotlin_version = '1.2.0'
     repositories {
+        mavenLocal()
+        // central仓和jcenter仓的聚合仓
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        // proxy: https://maven.google.com/
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        // proxy: https://plugins.gradle.org/m2/
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        // proxy: http://repo.spring.io/libs-milestone/
+        maven { url 'https://maven.aliyun.com/repository/spring' }
+        // proxy: http://repo.spring.io/plugins-release/
+        maven { url 'https://maven.aliyun.com/repository/spring-plugin' }
+        // proxy: https://repo.grails.org/grails/core
+        maven { url 'https://maven.aliyun.com/repository/grails-core' }
+        // proxy: https://repository.apache.org/snapshots/
+        maven { url 'https://maven.aliyun.com/repository/apache-snapshots' }
         mavenCentral()
         jcenter()
         google()
@@ -19,6 +34,21 @@ buildscript {
 
 allprojects {
     repositories {
+        mavenLocal()
+        // central仓和jcenter仓的聚合仓
+        maven { url 'https://maven.aliyun.com/repository/public' }
+        // proxy: https://maven.google.com/
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        // proxy: https://plugins.gradle.org/m2/
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        // proxy: http://repo.spring.io/libs-milestone/
+        maven { url 'https://maven.aliyun.com/repository/spring' }
+        // proxy: http://repo.spring.io/plugins-release/
+        maven { url 'https://maven.aliyun.com/repository/spring-plugin' }
+        // proxy: https://repo.grails.org/grails/core
+        maven { url 'https://maven.aliyun.com/repository/grails-core' }
+        // proxy: https://repository.apache.org/snapshots/
+        maven { url 'https://maven.aliyun.com/repository/apache-snapshots' }
         mavenCentral()
         jcenter()
         google()

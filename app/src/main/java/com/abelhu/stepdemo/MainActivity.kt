@@ -14,7 +14,6 @@ import com.qicode.extension.sp
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
-
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,8 +37,6 @@ class MainActivity : AppCompatActivity() {
             groundSize = 26.dp
             // 圆滑程度
             smooth = 0.2f
-            // 需要排除的气泡半径
-            excludeRadius = 20.dp
         }
     }
 
@@ -103,7 +100,7 @@ class MainActivity : AppCompatActivity() {
             progressBar.progressMax = Random().nextInt(15000)
             progressBar.postInvalidate()
             // 更新气泡位置
-            container.updateBubble()
+            bubbleView.updateBubble()
         }
     }
 
@@ -123,7 +120,7 @@ class MainActivity : AppCompatActivity() {
         randomSubProgress.setOnClickListener(this::randomSubProgress)
         addBubble.setOnClickListener { (bubbleView.adapter as BubbleAdapter).addBubble() }
         reduceBubble.setOnClickListener { (bubbleView.adapter as BubbleAdapter).reduceBubble() }
-        layoutBubble.setOnClickListener { container.updateBubble() }
+        layoutBubble.setOnClickListener { bubbleView.updateBubble() }
     }
 
     private fun randomProgress(view: View) {
